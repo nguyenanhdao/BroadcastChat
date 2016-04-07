@@ -31,7 +31,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="api-v1\utils\base-api.js" />
+    <Compile Include="api-v1\base-api.js" />
+    <Compile Include="api-v1\user-authorization-type.js" />
     <Compile Include="system-log.js" />
     <Compile Include="configuration.js" />
     <Compile Include="configuration\mongoose-configuration.js" />
@@ -72,7 +73,6 @@
     <Folder Include="data-access\validation\" />
     <Folder Include="public\" />
     <Folder Include="public\lib\" />
-    <Folder Include="api-v1\utils\" />
     <Folder Include="data-access\dtc\user\" />
     <Folder Include="socket\" />
     <Folder Include="views\" />

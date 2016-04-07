@@ -6,20 +6,25 @@ var Configuration = require('./configuration.js');
 var Express = require('express');
 var Controllers = require('./controllers');
 var Path = require('path');
+var APIRouter = require('./api-v1/main-router.js');
 
 (function () {
     // Create and setup for express application
     var app = Express();
     var server = Http.Server(app);
-    
-    // Setting up MVC
-    app.set('view engine', 'vash');
-    app.use(Express.static(Path.resolve(__dirname + "/public")));
+    var apiRouter = null;
     
     // Config passport for authentication
     require('./configuration/passport-configuration.js').config(app);
     require('./configuration/mongoose-configuration.js').config(Configuration.MONGODB_URL);
 
+    // Setting up MVC
+    app.set('view engine', 'vash');
+    app.use(Express.static(Path.resolve(__dirname + "/public")));
+    
+    // Setting up API
+    apiRouter = new APIRouter(app);
+    
     // Create and setup for socket.io
     var socket = require('./socket/socket.js');
     socket.init(server);

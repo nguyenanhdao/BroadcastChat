@@ -31,8 +31,12 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="api-v1\base-router.js" />
     <Compile Include="api-v1\base-api.js" />
+    <Compile Include="api-v1\main-router.js" />
     <Compile Include="api-v1\user-authorization-type.js" />
+    <Compile Include="api-v1\user\router.js" />
+    <Compile Include="api-v1\user\register-api.js" />
     <Compile Include="system-log.js" />
     <Compile Include="configuration.js" />
     <Compile Include="configuration\mongoose-configuration.js" />

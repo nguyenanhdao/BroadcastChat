@@ -6,30 +6,23 @@ var Express = require('express');
 var Util = require('util');
 var Rfr = require('rfr');
 var Promise = require('promise');
+var BodyParser = require('body-parser');
 
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
 (function (module) {
-    
-    var _routePath = null;                          // Path for API
-    var _requiredAuthorizationType = null;          // Required Authorization type to invoke this API
-    var _route = null;                              // Express router to handle request
-
     /**
      * Create API object to handle request and response
+     * @param parentRouter Parent Router
     **/
-    function BaseAPI(routeObject, routePath, requiredAuthorizationType) {
+    function BaseAPI(parentRouter, routePath, requiredAuthorizationType) {
 
-        _routePath = routerPath;
-        _requiredAuthorizationType = requiredAuthorizationType;
+        this._routePath = routePath;
+        this._requiredAuthorizationType = requiredAuthorizationType;
         
         // Register new express route object to handle api path
-        _route = Express.Router();
-        _route.post('/', this.doRun);
-        
-        // Add this router to parrent router
-        routeObject.use(_routePath, _route);
+        parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun);
     };
     
     /**
@@ -38,12 +31,12 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
     **/
     BaseAPI.prototype.getRequiredAuthorization = function () {
         
-        if (Util.isNullOrUndefined(_requiredAuthorizationType)) {
+        if (Util.isNullOrUndefined(this._requiredAuthorizationType)) {
             throw 'Authorization Type for API has not been decleared.';
         };
         
         // By default, return authorized user
-        return _requiredAuthorizationType;
+        return this._requiredAuthorizationType;
         
     };
     
@@ -53,19 +46,18 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
     **/
     BaseAPI.prototype.getAPIRoute = function () {
         
-        if (Util.isNullOrUndefined(_routePath)) {
+        if (Util.isNullOrUndefined(this._routePath)) {
             throw 'API Route has not been decleared.';
         };
 
 
-        return _routePath;
+        return this._routePath;
     };
     
     /**
      * Run processing function with checking required authorization
     **/
     BaseAPI.prototype.doRun = function (request, response) {
-
         // Validate user authorization first
         var userAuthorizationType = request.body.userAuthorizationType;
         var requiredAuthorizationType = this.getRequiredAuthorization();

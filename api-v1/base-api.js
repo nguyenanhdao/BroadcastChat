@@ -11,17 +11,16 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
 (function (module) {
     
-    /**
-     * API Route
-    **/
-    var _apiRoute = null;
+    var _apiRoute = null;                           // API Route
+    var _requiredAuthorizationType = null;          // Required Authorization type to invoke this API
 
     /**
      * Create API object to handle request and response
     **/
-    function BaseAPI(apiRoute) {
+    function BaseAPI(apiRoute, requiredAuthorizationType) {
 
         _apiRoute = apiRoute;
+        _requiredAuthorizationType = requiredAuthorizationType;
 
     };
     
@@ -31,8 +30,12 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
     **/
     BaseAPI.prototype.getRequiredAuthorization = function () {
         
+        if (Util.isNullOrUndefined(_requiredAuthorizationType)) {
+            throw 'Authorization Type for API has not been decleared.';
+        };
+        
         // By default, return authorized user
-        return UserAuthorizationType.AuthorizationUser;
+        return _requiredAuthorizationType;
         
     };
     

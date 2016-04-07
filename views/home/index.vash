@@ -1,0 +1,22 @@
+﻿@html.extend('layout', function(model) {
+  @html.block('body', function (model) {
+    
+    <p>Index page</p>
+    <p><input type='text' style='width: 100px;'/></p>
+
+
+    <script src='/lib/socket.io-client/socket.io.js'></script>
+    <script>
+      var socket = io.connect();
+
+      socket.on('showThis', function (message) {
+
+        console.log(message);
+
+      });
+
+      socket.emit('fromClient', 'Message from client side yeyeeeee');
+
+    </script>
+  })
+})

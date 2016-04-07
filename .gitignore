@@ -25,6 +25,12 @@ build/Release
 
 # Dependency directory
 node_modules
+public\lib
+
+# Build and debug
+obj
+.ntvs_analysis.dat
+.ntvs_analysis.dat.tmp
 
 # Optional npm cache directory
 .npm

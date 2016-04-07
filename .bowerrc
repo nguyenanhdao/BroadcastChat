@@ -1,0 +1,6 @@
+{
+    "directory":  "public/lib",
+    "proxy": "http://10.9.0.49:3128",
+    "https-proxy": "http://10.9.0.49:3128",
+    "no-proxy": "http://10.9.0.49:3128"
+}

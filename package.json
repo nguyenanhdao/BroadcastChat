@@ -1,0 +1,25 @@
+{
+  "name": "abuchat",
+  "version": "0.0.0",
+  "description": "abuchat",
+  "main": "server.js",
+  "author": {
+    "name": "N.Dao",
+    "email": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "lodash": "^4.6.1",
+    "mongodb": "^2.1.7",
+    "mongoose": "^4.4.10",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "promise": "^7.1.1",
+    "rfr": "^1.2.3",
+    "socket.io": "^1.4.5",
+    "vash": "^0.11.1"
+  }
+}

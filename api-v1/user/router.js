@@ -23,6 +23,9 @@ var BaseRouter = Rfr('api-v1/base-router.js');
         
         // user/register
         this.registerAPI(require('./register-api.js'));
+
+        // user/login
+        this.registerAPI(require('./login-api.js'));
         
     };
     

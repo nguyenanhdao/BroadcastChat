@@ -38,6 +38,12 @@ var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
                 response.send('User not login.');
             }
         });
+        
+        app.post('/logout', function (request, response) {
+            request.logout();
+            response.send('Logout !');
+            response.end();
+        });
 
         app.post('/login', Passport.authenticate('local', { failureRedirect: '/' }),
             function (request, response) {
@@ -64,7 +70,7 @@ var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
         }); 
 
         app.post('/testRegister', function (request, response) {
-            UserDTC.getAll().then(
+            UserDTC.getInstance().getAll().then(
                 function (list) {
                     response.send(list);
                     response.end();

@@ -16,13 +16,29 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
      * Create API object to handle request and response
      * @param parentRouter Parent Router
     **/
-    function BaseAPI(parentRouter, routePath, requiredAuthorizationType) {
+    function BaseAPI(parentRouter, routePath, requiredAuthorizationType, isCustomMiddleware) {
 
         this._routePath = routePath;
         this._requiredAuthorizationType = requiredAuthorizationType;
         
-        // Register new express route object to handle api path
-        parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun.bind(this));
+        if (isCustomMiddleware) {
+            
+            this.customMiddleware(parentRouter);
+
+        } else {
+            // Register new express route object to handle api path
+            parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun.bind(this));
+        }
+    };
+    
+    /**
+     * Methods to inject custom middleware function for each API
+     * @param parentRouter Parent Router
+    **/
+    BaseAPI.prototype.customMiddleware = function (parentRouter) {
+
+        throw 'CustomMiddleware function is not implemented';
+
     };
     
     /**

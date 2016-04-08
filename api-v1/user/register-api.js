@@ -10,7 +10,6 @@ var Promise = require('promise');
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var BaseAPI = Rfr('api-v1/base-api.js');
 
-
 (function (module) {
     /**
      * Register new user API

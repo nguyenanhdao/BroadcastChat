@@ -125,19 +125,19 @@ var UserMO = DatabaseContext.User;
     **/
     UserDTC.prototype.delete = function (userDTO) {
         return new Promise(function (resolve, reject) {
-            Database.User.find({ mobile: userDTO.mobile }, function (error, userMO) {
+            Database.User.findOne({ mobile: userDTO.mobile }, function (error, userMO) {
                 // Check that we can find that user
                 if (!Util.isNullOrUndefined(error)) {
-                    SystemLog.error('Cannot find user by user\'mobile: ' + userDTO.mobile, error);
-                    return reject(error);
+                    SystemLog.error('Cannot find user by user\'s mobile: ' + userDTO.mobile, error);
+                    return reject('Cannot find user by user\'s mobile');
                 }
                 
                 // User is found
                 // Invoke remove function
                 userMO.remove(function (error) {
                     if (!Util.isNullOrUndefined(error)) {
-                        SystemLog.error('Cannot delete user', error);
-                        return reject(error);
+                        SystemLog.error('Cannot delete user. Error message: ', error);
+                        return reject('Cannot delete user');
                     }
 
                     resolve();
@@ -156,7 +156,7 @@ var UserMO = DatabaseContext.User;
         var _self = this;
 
         return new Promise(function (resolve, reject) {
-            DatabaseContext.User.find({ mobile: mobile }, function (error, userMO) {
+            DatabaseContext.User.findOne({ mobile: mobile }, function (error, userMO) {
                 if (!Util.isNullOrUndefined(error)) {
                     SystemLog.error('Cannot find user by user\'s mobile: ' + mobile, error);
                     return reject(error);

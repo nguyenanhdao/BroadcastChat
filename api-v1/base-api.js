@@ -22,7 +22,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
         this._requiredAuthorizationType = requiredAuthorizationType;
         
         // Register new express route object to handle api path
-        parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun);
+        parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun.bind(this));
     };
     
     /**
@@ -60,8 +60,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
     BaseAPI.prototype.doRun = function (request, response) {
         // Validate user authorization first
         var userAuthorizationType = request.body.userAuthorizationType;
-        var requiredAuthorizationType = this.getRequiredAuthorization();
-        if (userAuthorizationType != requiredAuthorizationType) {
+        if (!UserAuthorizationType.isEqual(userAuthorizationType, this.getRequiredAuthorization())) {
             throw 'Access Denined.';
         };
 
@@ -73,6 +72,8 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
      * Override this function for each API
     **/
     BaseAPI.prototype.run = function (request, response) {
+
+        throw 'Run function of BaseAPI is not implemented';
 
     };
 

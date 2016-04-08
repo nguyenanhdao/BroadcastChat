@@ -21,12 +21,10 @@ var BaseRouter = Rfr('api-v1/base-router.js');
     **/
     Router.prototype.registerRoute = function (parentRouter) {
         
-        // user/register
-        this.registerAPI(require('./register-api.js'));
-
-        // user/login
-        this.registerAPI(require('./login-api.js'));
-        
+        // USER API
+        this.registerAPI(require('./register-api.js'));     // user/register
+        this.registerAPI(require('./login-api.js'));        // user/login
+        this.registerAPI(require('./logout-api.js'));     // user/logout
     };
     
     module.exports = Router;

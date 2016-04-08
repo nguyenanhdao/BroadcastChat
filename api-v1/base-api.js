@@ -92,6 +92,18 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
         throw 'Run function of BaseAPI is not implemented';
 
     };
-
+    
+    /**
+     * Send error response
+    **/
+    BaseAPI.prototype.sendErrorResponse = function (response, errorCode, errorMessage) {
+        response.send({
+            errorCode: errorCode,
+            errorMessage: errorMessage,
+            isError: true
+        });
+        response.end();
+    };
+    
     module.exports = BaseAPI;
 })(module); 

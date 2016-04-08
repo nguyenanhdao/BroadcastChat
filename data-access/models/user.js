@@ -14,7 +14,8 @@ var Validation = require('../validation');
     var userSchema = new Schema({
 
         mobile: {
-            type: String
+            type: String,
+            unique: true
         },
 
         password: {

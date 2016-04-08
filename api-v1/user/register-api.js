@@ -9,6 +9,7 @@ var Promise = require('promise');
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var BaseAPI = Rfr('api-v1/base-api.js');
+var SystemLog = Rfr('system-log.js');
 
 (function (module) {
     /**
@@ -22,10 +23,9 @@ var BaseAPI = Rfr('api-v1/base-api.js');
     Util.inherits(RegisterAPI, BaseAPI);
     
 
-    RegisterAPI.prototype.run = function (request, response) {
+    RegisterAPI.prototype.run = function (request, response, _self) {
         var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
         var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
-        
 
         var userDTO = new UserDTO({
             mobile: request.body.mobile,
@@ -33,14 +33,37 @@ var BaseAPI = Rfr('api-v1/base-api.js');
             fullName: request.body.fullName
         });
         
-        UserDTC.getInstance().createNew(userDTO).then(
+        
+        // Check duplicated mobile number first
+        UserDTC.getInstance().getByMobile(userDTO.mobile).then(
             function (dto) {
-                response.send(userDTO);
-                response.end();
+                
+                if (Util.isNullOrUndefined(dto)) {
+
+                    UserDTC.getInstance().createNew(userDTO).then(
+                        function (dto) {
+                            response.send(userDTO);
+                            response.end();
+                        },
+                        function (error) {
+                            response.send('Cannot create new user. Error message : ' + error);
+                            response.end();
+                        }
+                    );
+
+                } else {
+                    
+                    response.send('Existed mobile number.');
+                    response.send();
+
+                }
+
             },
-                function (error) {
-                response.send('Cannot create new user. Error message : ' + error);
-                response.end();
+            function (error) {
+                
+                SystemLog.error(error);
+                _self.sendErrorResponse(response, 'INTERAL_SERVER_ERROR', 'Internal Server Error.');
+                
             }
         );
     };

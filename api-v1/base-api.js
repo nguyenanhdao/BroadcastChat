@@ -80,7 +80,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
             throw 'Access Denined.';
         };
 
-        this.run(request, response);
+        this.run(request, response, this);
     };
     
     /**

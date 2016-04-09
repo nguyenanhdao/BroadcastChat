@@ -10,6 +10,7 @@ var Passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Configuration = require('../configuration.js');
 var Rfr = require('rfr');
+var Util = require('util');
 
 // Internal modules
 var SystemLog = Rfr('system-log.js');
@@ -45,25 +46,21 @@ var SystemLog = Rfr('system-log.js');
             },
             function (mobile, password, callback) {
                 var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
-
-                UserDTC.getInstance().getByMobile(mobile).then(
-                    function (userDTO) {
-                        if (password === userDTO.password) {
-                        
-                            userDTO.password = '';
-                            callback(null, userDTO);
-
-                        } else {
-                        
-                            callback('Wrong username or password.', null);
-
-                        };
-                    },
-                    function (error) {
+                
+                UserDTC.getInstance().getByMobile(mobile, function (error, userDTO) {
+                    // Handle error
+                    if (!Util.isNullOrUndefined(error)) {
                         callback('Internal server error.', null);
                         SystemLog.error('Cannot get user from mobile in UserDTC. Error message: ' + error);
                     }
-                );
+
+                    // Compare password
+                    if (password === userDTO.password) {
+                        userDTO.password = '';
+                        return callback(null, userDTO);
+                    }
+                    return callback('Wrong username or password.', null);
+                });
             })
         );
     };

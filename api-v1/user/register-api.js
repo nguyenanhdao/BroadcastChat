@@ -22,7 +22,10 @@ var SystemLog = Rfr('system-log.js');
     };
     Util.inherits(RegisterAPI, BaseAPI);
     
-
+    
+    /**
+     * Register new user
+    **/
     RegisterAPI.prototype.run = function (request, response, _self) {
         var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
         var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
@@ -34,38 +37,17 @@ var SystemLog = Rfr('system-log.js');
         });
         
         
-        // Check duplicated mobile number first
-        UserDTC.getInstance().getByMobile(userDTO.mobile).then(
-            function (dto) {
-                
-                if (Util.isNullOrUndefined(dto)) {
-
-                    UserDTC.getInstance().createNew(userDTO).then(
-                        function (dto) {
-                            response.send(userDTO);
-                            response.end();
-                        },
-                        function (error) {
-                            response.send('Cannot create new user. Error message : ' + error);
-                            response.end();
-                        }
-                    );
-
-                } else {
-                    
-                    response.send('Existed mobile number.');
-                    response.send();
-
-                }
-
-            },
-            function (error) {
-                
-                SystemLog.error(error);
-                _self.sendErrorResponse(response, 'INTERAL_SERVER_ERROR', 'Internal Server Error.');
-                
+        UserDTC.getInstance().createNew(userDTO, function (error, result) {
+            
+            // Handle create error
+            if (!Util.isNullOrUndefined(error)) {
+                response.send(error);
+                response.end();
+            } else {
+                response.send('Create user successfull.');
+                response.end();
             }
-        );
+        });
     };
 
     module.exports = RegisterAPI;

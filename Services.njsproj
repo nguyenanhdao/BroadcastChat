@@ -40,6 +40,7 @@
     <Compile Include="api-v1\user\login-api.js" />
     <Compile Include="api-v1\user\router.js" />
     <Compile Include="api-v1\user\register-api.js" />
+    <Compile Include="data-access\response-code.js" />
     <Compile Include="system-log.js" />
     <Compile Include="configuration.js" />
     <Compile Include="configuration\mongoose-configuration.js" />

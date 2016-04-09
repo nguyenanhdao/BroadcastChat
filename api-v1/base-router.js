@@ -15,24 +15,24 @@ var Express = require('express');
         this._apis = [];                     // Handle apis
         this._routerPath = routePath;        // Router path
         this._router = Express.Router();     // New router to handle nested route
-        
+
         // Register api through this router
         this.registerRoute(this._router);
 
         // Attach new route to parentRoute
         parentRouter.use(this._routerPath, this._router);
     };
-    
+
     /**
      * Register child route and handle object for each api
      * Must override this function
     **/
     BaseRouter.prototype.registerRoute = function (_router) {
-        
+
         throw 'RegisterRoute function is not implemented.';
 
     };
-    
+
     /**
      * Register api
     **/

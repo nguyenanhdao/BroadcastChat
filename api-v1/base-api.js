@@ -10,6 +10,7 @@ var BodyParser = require('body-parser');
 
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
+var ResponseCode = Rfr('api-v1/response-code.js');
 
 (function (module) {
     /**
@@ -20,9 +21,9 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
         this._routePath = routePath;
         this._requiredAuthorizationType = requiredAuthorizationType;
-        
+
         if (isCustomMiddleware) {
-            
+
             this.customMiddleware(parentRouter);
 
         } else {
@@ -30,7 +31,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
             parentRouter.post(this._routePath, BodyParser.json(), BodyParser.urlencoded({ extended: true }), this.doRun.bind(this));
         }
     };
-    
+
     /**
      * Methods to inject custom middleware function for each API
      * @param parentRouter Parent Router
@@ -40,28 +41,28 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
         throw 'CustomMiddleware function is not implemented';
 
     };
-    
+
     /**
      * Get required authorization to run API service
      * @return Return required authorization
     **/
     BaseAPI.prototype.getRequiredAuthorization = function () {
-        
+
         if (Util.isNullOrUndefined(this._requiredAuthorizationType)) {
             throw 'Authorization Type for API has not been decleared.';
         };
-        
+
         // By default, return authorized user
         return this._requiredAuthorizationType;
-        
+
     };
-    
+
     /**
      * Get APIRoute
      * @return path for this api (relative path)
     **/
     BaseAPI.prototype.getAPIRoute = function () {
-        
+
         if (Util.isNullOrUndefined(this._routePath)) {
             throw 'API Route has not been decleared.';
         };
@@ -69,7 +70,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
         return this._routePath;
     };
-    
+
     /**
      * Run processing function with checking required authorization
     **/
@@ -82,7 +83,7 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
         this.run(request, response, this);
     };
-    
+
     /**
      * Main function for processing services
      * Override this function for each API
@@ -92,18 +93,45 @@ var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
         throw 'Run function of BaseAPI is not implemented';
 
     };
-    
+
     /**
      * Send error response
     **/
-    BaseAPI.prototype.sendErrorResponse = function (response, errorCode, errorMessage) {
+    BaseAPI.prototype.sendErrorResponse = function (response, code, data) {
         response.send({
-            errorCode: errorCode,
-            errorMessage: errorMessage,
-            isError: true
+            code: code,
+            message: ResponseCode.getMessage(code),
+            isError: true,
+            data: data
         });
         response.end();
     };
-    
+
+    /**
+     * Send success response
+    **/
+    BaseAPI.prototype.sendSuccessResponse = function (response, code, data) {
+        response.send({
+            code: code,
+            message: ResponseCode.getMessage(code),
+            isError: false,
+            data: data
+        });
+        response.end();
+    };
+
+    /**
+     * Send simple success reponse to client-side
+    **/
+    BaseAPI.prototype.sendSimpleSuccessReponse = function (response) {
+        response.send({
+            code: 'ok',
+            message: ErrorCode.getMessage('ok'),
+            isError: false
+        });
+        response.end();
+    };
+
+
     module.exports = BaseAPI;
-})(module); 
+})(module);

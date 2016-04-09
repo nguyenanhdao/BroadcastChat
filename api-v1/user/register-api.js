@@ -4,25 +4,24 @@
 // External library
 var Util = require('util');
 var Rfr = require('rfr');
-var Promise = require('promise');
 
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var BaseAPI = Rfr('api-v1/base-api.js');
-var SystemLog = Rfr('system-log.js');
+
 
 (function (module) {
     /**
      * Register new user API
     **/
     function RegisterAPI(parentRouter) {
-        
+
         BaseAPI.call(this, parentRouter, '/register', UserAuthorizationType.UnAuthorizationUser);
 
     };
     Util.inherits(RegisterAPI, BaseAPI);
-    
-    
+
+
     /**
      * Register new user
     **/
@@ -35,20 +34,16 @@ var SystemLog = Rfr('system-log.js');
             password: request.body.password,
             fullName: request.body.fullName
         });
-        
-        
-        UserDTC.getInstance().createNew(userDTO, function (error, result) {
-            
-            // Handle create error
-            if (!Util.isNullOrUndefined(error)) {
-                response.send(error);
-                response.end();
+
+
+        UserDTC.getInstance().createNew(userDTO, function (errorCode, data) {
+            if (!Util.isNullOrUndefined(errorCode)) {
+                _self.sendErrorResponse(response, errorCode, data);
             } else {
-                response.send('Create user successfull.');
-                response.end();
+                _self.sendSimpleSuccessReponse(response);
             }
         });
     };
 
     module.exports = RegisterAPI;
-})(module); 
+})(module);

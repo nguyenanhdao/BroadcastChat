@@ -17,17 +17,19 @@ var BaseAPI = Rfr('api-v1/base-api.js');
      * Logout API
     **/
     function LogoutAPI(parentRouter) {
-        
+
         BaseAPI.call(this, parentRouter, '/logout', UserAuthorizationType.UnAuthorizationUser);
-        
+
     };
     Util.inherits(LogoutAPI, BaseAPI);
-    
-    LogoutAPI.prototype.run = function (request, response) {
+
+    /**
+     * Logout processing function
+    **/
+    LogoutAPI.prototype.run = function (request, response, _self) {
         request.logout();
-        response.send('Logout successfull.');
-        response.end();
+        _self.sendSimpleSuccessReponse(response);
     };
 
     module.exports = LogoutAPI;
-})(module); 
+})(module);

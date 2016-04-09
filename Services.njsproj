@@ -34,6 +34,7 @@
     <Compile Include="api-v1\base-router.js" />
     <Compile Include="api-v1\base-api.js" />
     <Compile Include="api-v1\main-router.js" />
+    <Compile Include="api-v1\response-code.js" />
     <Compile Include="api-v1\user-authorization-type.js" />
     <Compile Include="api-v1\user\logout-api.js" />
     <Compile Include="api-v1\user\login-api.js" />

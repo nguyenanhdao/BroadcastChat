@@ -16,9 +16,7 @@ var Util = require('util');
         // Internal server error
         'databaseError': 'Database connection error.',
 
-        'userDTCMobileIsRequired': 'Mobile field is required.',
-        'userDTCPasswordIsRequired': 'Password field is required.',
-        'userDTCFullNameIsRequired': 'User Full name field is required.'
+        'userDTCDuplicatedMobileNumber': 'Duplicated mobile number.',
     };
 
 

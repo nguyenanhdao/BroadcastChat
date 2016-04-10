@@ -132,7 +132,7 @@ var UserMO = DatabaseContext.User;
                 return callback(ResponseCode.getMessage(error), null);
             }
 
-            return callback(null, userDTO);
+            callback(null, userDTO);
         });
     };
 
@@ -166,7 +166,7 @@ var UserMO = DatabaseContext.User;
             // Handle database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot delete user. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage('databaseError'), null);
+                return callback(ResponseCode.getMessage(error), null);
             }
 
             return callback(null);

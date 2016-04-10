@@ -6,7 +6,18 @@ var UserDTCTests = Rfr('unit-tests/data-access/dtc/user-dtc-tests.js');
 (function(TestManager){
     TestManager.initialize = function (app) {
         app.post('/unit-tests', TestManager.runTest);
+        app.post('/reset-unit-tests', TestManager.resetDatabase);
     };
+
+
+    TestManager.resetDatabase = function (request, response) {
+        var DatabaseContext = Rfr('data-access/database-context.js');
+        DatabaseContext.User.remove({}, function(error) {
+            response.send('Reset done.');
+            response.end();
+        });
+    };
+
 
     TestManager.runTest = function (request, response) {
 

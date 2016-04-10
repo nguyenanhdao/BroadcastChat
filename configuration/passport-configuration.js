@@ -1,6 +1,7 @@
 ﻿//
 // Reference required library
 //
+// External modules
 var Path = require('path');
 var CookieParser = require('cookie-parser');
 var Session = require('express-session');
@@ -8,6 +9,11 @@ var BodyParser = require('body-parser');
 var Passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Configuration = require('../configuration.js');
+var Rfr = require('rfr');
+var Util = require('util');
+
+// Internal modules
+var SystemLog = Rfr('system-log.js');
 
 (function (passportConfiguration) {
 
@@ -35,24 +41,26 @@ var Configuration = require('../configuration.js');
         
         // Authentication strategy
         Passport.use(new LocalStrategy({
-                usernameField: 'username',
+                usernameField: 'mobile',
                 passwordField: 'password'
             },
-            function (username, password, callback) {
+            function (mobile, password, callback) {
+                var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
                 
-                // TO-DO implement real authentication here
-                console.log('Validation user running..');
-                
-                if (username === 'nguyendauit' && password === 'bobo#$1892') {
-                    var user = {
-                        username: username
-                    };
-                    
-                    callback(null, user);
-                }
-                else {
-                    callback('Invalid login.', null);
-                }
+                UserDTC.getInstance().getByMobile(mobile, function (error, userDTO) {
+                    // Handle error
+                    if (!Util.isNullOrUndefined(error)) {
+                        callback('Internal server error.', null);
+                        SystemLog.error('Cannot get user from mobile in UserDTC. Error message: ' + error);
+                    }
+
+                    // Compare password
+                    if (password === userDTO.password) {
+                        userDTO.password = '';
+                        return callback(null, userDTO);
+                    }
+                    return callback('Wrong username or password.', null);
+                });
             })
         );
     };

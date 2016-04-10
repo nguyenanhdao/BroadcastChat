@@ -27,8 +27,8 @@ var Util = require('util');
     ResponseCode.getMessage = function (code) {
         var message = code;
 
-        if (!Util.isNullOrUndefined(ErrorCode.Code[code])) {
-            message = ErrorCode.Code[code];
+        if (!Util.isNullOrUndefined(ResponseCode.Code[code])) {
+            message = ResponseCode.Code[code];
         }
 
         return message;

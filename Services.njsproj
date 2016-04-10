@@ -31,15 +31,15 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="api-v1\base-router.js" />
     <Compile Include="api-v1\base-api.js" />
+    <Compile Include="api-v1\base-router.js" />
     <Compile Include="api-v1\main-router.js" />
     <Compile Include="api-v1\response-code.js" />
     <Compile Include="api-v1\user-authorization-type.js" />
-    <Compile Include="api-v1\user\logout-api.js" />
     <Compile Include="api-v1\user\login-api.js" />
-    <Compile Include="api-v1\user\router.js" />
+    <Compile Include="api-v1\user\logout-api.js" />
     <Compile Include="api-v1\user\register-api.js" />
+    <Compile Include="api-v1\user\router.js" />
     <Compile Include="data-access\response-code.js" />
     <Compile Include="system-log.js" />
     <Compile Include="configuration.js" />
@@ -60,6 +60,9 @@
     <Compile Include="data-access\dtc\base-dtc.js" />
     <Compile Include="data-access\dtc\user\user-dto.js" />
     <Compile Include="socket\socket.js" />
+    <Compile Include="unit-tests\base-test.js" />
+    <Compile Include="unit-tests\data-access\dtc\user-dtc-tests.js" />
+    <Compile Include="unit-tests\test-manager.js" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
     <Content Include="package.json" />
@@ -83,6 +86,9 @@
     <Folder Include="public\lib\" />
     <Folder Include="data-access\dtc\user\" />
     <Folder Include="socket\" />
+    <Folder Include="unit-tests\" />
+    <Folder Include="unit-tests\data-access\" />
+    <Folder Include="unit-tests\data-access\dtc\" />
     <Folder Include="views\" />
     <Folder Include="api-v1\" />
     <Folder Include="views\account\" />

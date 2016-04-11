@@ -62,6 +62,7 @@
     <Compile Include="socket\socket.js" />
     <Compile Include="unit-tests\base-test.js" />
     <Compile Include="unit-tests\data-access\dtc\user-dtc-tests.js" />
+    <Compile Include="unit-tests\list-unit-tests.js" />
     <Compile Include="unit-tests\test-manager.js" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />

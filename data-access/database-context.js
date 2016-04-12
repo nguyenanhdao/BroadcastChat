@@ -7,14 +7,14 @@ var Promise = require('promise');
 
 (function (module) {
     function DatabaseContext() {
-            
+
     };
-    
+
     //
     // Load models
     //
     var User = require('./models/user.js');
-    
+
     //
     // Register schema with database context
     //

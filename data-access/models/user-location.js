@@ -3,7 +3,6 @@
 //
 var Mongoose = require('mongoose');
 var Schema = Mongoose.Schema;
-var Validation = require('../validation');
 
 (function (UserLocation) {
     UserLocation.MODEL_NAME = 'UserLocation';
@@ -11,7 +10,7 @@ var Validation = require('../validation');
     //
     // Define user Schema
     //
-    var userLocationSchema = new Schema({
+    UserLocation.SCHEMA = new Schema({
         longitude: {
             type: Number,
             require: true
@@ -31,6 +30,6 @@ var Validation = require('../validation');
     //
     // Register schema with Mongoose
     //
-    UserLocation = Mongoose.model(UserLocation.MODEL_NAME, userLocationSchema);
+    UserLocation = Mongoose.model(UserLocation.MODEL_NAME, UserLocation.SCHEMA);
 
 })(module.exports);

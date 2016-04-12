@@ -14,11 +14,13 @@ var Promise = require('promise');
     // Load models
     //
     var User = require('./models/user.js');
+    var UserLocation = require('./models/user-location.js');
 
     //
     // Register schema with database context
     //
     DatabaseContext.User = Mongoose.model(User.MODEL_NAME);
+    DatabaseContext.UserLocation = Mongoose.model(UserLocation.MODEL_NAME);
 
     module.exports = DatabaseContext;
 })(module);

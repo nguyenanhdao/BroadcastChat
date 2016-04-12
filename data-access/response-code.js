@@ -17,6 +17,7 @@ var Util = require('util');
         'databaseError': 'Database connection error.',
 
         'userDTCDuplicatedMobileNumber': 'Duplicated mobile number.',
+        'userLocationDTCNotExistedUser': 'User is not existed.'
     };
 
 

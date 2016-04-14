@@ -78,7 +78,7 @@ var UserLocationMO = DatabaseContext.UserLocation;
         var userLocationDTO = new UserLocationDTO({
             longitude: mongooseObject.longitude,
             latitude: mongooseObject.latitude,
-            createdWhen: mongooseObject.createdWhen
+            createdWhen: new Date(mongooseObject.createdWhen)
         });
 
         return userLocationDTO;

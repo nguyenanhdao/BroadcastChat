@@ -92,7 +92,7 @@ var UserMO = DatabaseContext.User;
             mobile: '01294419331',
             fullName: 'UnitTest createnew user',
             password: 'UnitTest createnew password',
-            createdWhen: Date.now()
+            createdWhen: new Date()
         });
 
         Async.waterfall([
@@ -122,6 +122,7 @@ var UserMO = DatabaseContext.User;
                 Assert.equal(userMO.mobile, newUser.mobile);
                 Assert.equal(userMO.fullName, newUser.fullName);
                 Assert.equal(userMO.password, newUser.password);
+                Assert.equal((new Date(userMO.createdWhen)).getTime(), newUser.createdWhen.getTime());
                 innerCallback(null);
             }
         ],

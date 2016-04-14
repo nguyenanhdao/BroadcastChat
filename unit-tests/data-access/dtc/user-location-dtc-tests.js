@@ -75,9 +75,9 @@ var UserMO = DatabaseContext.User;
         var newUserLocation = new UserLocationDTO({
             longitude: 11.23,
             latitude: 12.13,
-            createdWhen: Date.now()
+            createdWhen: new Date()
         });
-        
+
         Async.waterfall([
             function (innerCallback) {
                 var DTC = UserLocationDTC.getInstance();
@@ -99,7 +99,7 @@ var UserMO = DatabaseContext.User;
 
                 Assert.equal(userMO.userLocation[0].longitude, newUserLocation.longitude);
                 Assert.equal(userMO.userLocation[0].latitude, newUserLocation.latitude);
-                // Assert.equal(userMO.userLocation[0].createdWhen, newUserLocation.createdWhen);
+                Assert.equal((new Date(userMO.userLocation[0].createdWhen)).getTime(), newUserLocation.createdWhen.getTime());
                 innerCallback(null);
             }
         ],

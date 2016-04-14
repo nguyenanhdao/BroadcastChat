@@ -77,7 +77,7 @@ var UserMO = DatabaseContext.User;
             latitude: 12.13,
             createdWhen: Date.now()
         });
-        console.log('Unit test user-location running...');
+        
         Async.waterfall([
             function (innerCallback) {
                 var DTC = UserLocationDTC.getInstance();

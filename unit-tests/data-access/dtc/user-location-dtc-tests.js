@@ -32,14 +32,25 @@ var UserMO = DatabaseContext.User;
      * Setup unit test enviroment
     **/
     UserLocationDTCTests.prototype.setup = function (callback) {
-        this._unitTestUser = new UserMO({
-            mobile: '11235811',
-            fullName: 'UnitTest fullname',
-            password: 'UnitTest password',
-            createdWhen: Date.now()
-        });
+        var _self = this;
 
-        this._unitTestUser.save(function (error) {
+        Async.waterfall([
+            _self.clean.bind(this),
+            function (innerCallback) {
+                _self._unitTestUser = new UserMO({
+                    mobile: '0914090540',
+                    fullName: 'UnitTest fullname',
+                    password: 'UnitTest password',
+                    createdWhen: Date.now()
+                });
+
+                _self._unitTestUser.save(function (error) {
+                    innerCallback(error);
+                });
+            }
+        ],
+
+        function (error) {
             callback(error);
         });
     };

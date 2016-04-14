@@ -123,8 +123,8 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
             function (userMO, innerCallback) {
                 var publicMessageMO = _self.mapFromDTO(publicMessageDTO);
                 publicMessageMO.save(function (error) {
-                    if(!Util.isNullOrUndefined(error)){
-                        publicMessageDTO.id = publicMessageMO._id;
+                    if(Util.isNullOrUndefined(error)){
+                        publicMessageDTO.id = publicMessageMO._id.toString();
                     }
 
                     innerCallback(error);

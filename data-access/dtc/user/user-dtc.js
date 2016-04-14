@@ -85,7 +85,7 @@ var UserMO = DatabaseContext.User;
             mobile: mongooseObject.mobile,
             password: mongooseObject.password,
             fullName: mongooseObject.fullName,
-            createdWhen: mongooseObject.createdWhen
+            createdWhen: new Date(mongooseObject.createdWhen)
         });
 
         return userDTO;

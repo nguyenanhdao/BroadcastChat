@@ -4,16 +4,13 @@
 var Mongoose = require('mongoose');
 var Schema = Mongoose.Schema;
 
-// Internal modules
-var PublicMessageReply = require('./public-message-reply.js');
-
-(function (PublicMessage) {
-    PublicMessage.MODEL_NAME = 'PublicMessage';
+(function (PublicMessageReply) {
+    PublicMessageReply.MODEL_NAME = 'PublicMessageReply';
 
     //
     // Define public message
     //
-    PublicMessage.SCHEMA = new Schema({
+    PublicMessageReply.SCHEMA = new Schema({
         message: {
             type: String,
             require: true
@@ -37,15 +34,12 @@ var PublicMessageReply = require('./public-message-reply.js');
         createdWho: {
             type: String,
             require: true
-        },
-
-        // Define sub document
-        publicMessageReply: [PublicMessageReply.SCHEMA]
+        }
     });
 
     //
     // Register schema with Mongoose
     //
-    PublicMessage = Mongoose.model(PublicMessage.MODEL_NAME, PublicMessage.SCHEMA);
+    PublicMessageReply = Mongoose.model(PublicMessageReply.MODEL_NAME, PublicMessageReply.SCHEMA);
 
 })(module.exports);

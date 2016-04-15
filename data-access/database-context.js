@@ -16,6 +16,7 @@ var Promise = require('promise');
     var User = require('./models/user.js');
     var UserLocation = require('./models/user-location.js');
     var PublicMessage = require('./models/public-message.js');
+    var PublicMessageReply = require('./models/public-message-reply.js')
 
     //
     // Register schema with database context
@@ -23,6 +24,7 @@ var Promise = require('promise');
     DatabaseContext.User = Mongoose.model(User.MODEL_NAME);
     DatabaseContext.UserLocation = Mongoose.model(UserLocation.MODEL_NAME);
     DatabaseContext.PublicMessage = Mongoose.model(PublicMessage.MODEL_NAME);
+    DatabaseContext.PublicMessageReply = Mongoose.model(PublicMessageReply.MODEL_NAME);
 
     module.exports = DatabaseContext;
 })(module);

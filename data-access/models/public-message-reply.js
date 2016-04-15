@@ -17,18 +17,17 @@ var Schema = Mongoose.Schema;
         },
 
         longitude: {
-            type: Number,
-            require: true
+            type: Number
         },
 
         latitude: {
-            type: Number,
-            require: true
+            type: Number
         },
 
         createdWhen: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            require: true
         },
 
         createdWho: {

@@ -44,10 +44,10 @@ var SystemLog = Rfr('system-log.js').getInstance();
 
         function (error){
             if (Util.isNullOrUndefined(error)) {
-                SystemLog.info('Unit test name: ' + _self._name + ' has passed the test.');
+                SystemLog.info('-------Unit test name: ' + _self._name + ' has passed the test.');
                 callback(null);
             } else {
-                SystemLog.info('Unit test name: ' + _self._name + ' has failed the test.');
+                SystemLog.info('-------Unit test name: ' + _self._name + ' has failed the test.');
                 callback(error);
             }
         });

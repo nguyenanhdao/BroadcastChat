@@ -12,6 +12,7 @@ var _ = require('lodash');
 var SystemLog = Rfr('system-log.js').getInstance();
 var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
 var BaseTest = Rfr('unit-tests/base-test.js');
+var UnitTestUtils = Rfr('unit-tests/unit-test-utils.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
 var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var UserMO = DatabaseContext.User;
@@ -34,16 +35,10 @@ var UserMO = DatabaseContext.User;
         var _self = this;
 
         Async.waterfall([
-            _self.clean.bind(this),
+            _self.clean.bind(_self),
             function (innerCallback) {
-                _self._unitTestUser = new UserMO({
-                    mobile: '0914090540',
-                    fullName: 'UnitTest fullname',
-                    password: 'UnitTest password',
-                    createdWhen: Date.now()
-                });
-
-                _self._unitTestUser.save(function (error) {
+                UnitTestUtils.createNewUser(function (error, newUser) {
+                    _self._unitTestUser = newUser;
                     innerCallback(error);
                 });
             }

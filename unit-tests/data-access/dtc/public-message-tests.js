@@ -95,7 +95,7 @@ var UserMO = DatabaseContext.User;
             },
 
             function (publicMessageMO, innerCallback) {
-                
+
                 if (Util.isNullOrUndefined(publicMessageMO)) {
                     Assert.fail();
                 }
@@ -119,13 +119,35 @@ var UserMO = DatabaseContext.User;
     };
 
     /**
+     *
+    **/
+    PublicMessageDTCTests.prototype.validate = function (callback) {
+        var _self = this;
+
+        // Validate required field
+        var publicMessageDTO = new PublicMessageDTO({
+        });
+
+        var validationErrors = PublicMessageDTC.getInstance().validate(publicMessageDTO);
+        Assert.notEqual(_.indexOf(validationErrors, 'Message is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Longitude is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Latitude is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Created When is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Created Who is required.'), -1);
+
+        SystemLog.info(_self._name + ' - test case - validate passed the test.');
+        callback(null);
+    };
+
+    /**
      * Override doTest function of base-test to run test case
     **/
     PublicMessageDTCTests.prototype.doTest = function (callback) {
         var _self = this;
 
         Async.waterfall([
-            _self.createNew.bind(_self)
+            _self.createNew.bind(_self),
+            _self.validate.bind(_self)
         ],
 
         function (error) {

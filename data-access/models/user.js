@@ -36,8 +36,7 @@ var UserLocation = require('./user-location.js');
         },
 
         // Define sub document
-        userLocation: [UserLocation.SCHEMA],
-        userPublicMessage: [UserPublicMessage.SCHEMA]
+        userLocation: [UserLocation.SCHEMA]
     });
 
     //

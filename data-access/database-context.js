@@ -15,7 +15,6 @@ var Promise = require('promise');
     //
     var User = require('./models/user.js');
     var UserLocation = require('./models/user-location.js');
-    var UserPublicMessage = require('./models/user-public-message.js');
     var PublicMessage = require('./models/public-message.js');
 
     //
@@ -23,7 +22,6 @@ var Promise = require('promise');
     //
     DatabaseContext.User = Mongoose.model(User.MODEL_NAME);
     DatabaseContext.UserLocation = Mongoose.model(UserLocation.MODEL_NAME);
-    DatabaseContext.UserPublicMessage = Mongoose.model(UserPublicMessage.MODEL_NAME);
     DatabaseContext.PublicMessage = Mongoose.model(PublicMessage.MODEL_NAME);
 
     module.exports = DatabaseContext;

@@ -7,13 +7,13 @@ var Util = require('util');
 (function (module) {
 
     function UserAuthorizationType() {
-    
+
     };
-    
-    UserAuthorizationType.UnAuthorizationUser = 0;
-    UserAuthorizationType.AuthorizationUser = 1;
-    UserAuthorizationType.AuthorizationAndUnAuthorizationUser = 2;
-    
+
+    UserAuthorizationType.UnAuthorizationUser = 3;
+    UserAuthorizationType.AuthorizationUser = 5;
+    UserAuthorizationType.AuthorizationAndUnAuthorizationUser = UserAuthorizationType.UnAuthorizationUser * UserAuthorizationType.AuthorizationUser;
+
     /**
      * Check two authorization are the same
      * @param current user authorization
@@ -21,15 +21,12 @@ var Util = require('util');
      * @return true if two authorization are the same type
     **/
     UserAuthorizationType.isEqual = function (currentAuthorization, requiredAuthorization) {
-        var result = currentAuthorization === requiredAuthorization;
-
-        // Handle special case for UnAuthorizedUser
-        // Undefined or null has the same meaning with UnAuthorizedUser
-        if (!result && requiredAuthorization === UserAuthorizationType.UnAuthorizationUser) {
-            result = Util.isNullOrUndefined(currentAuthorization);
+        // Standard parameter
+        if (Util.isNullOrUndefined(currentAuthorization)) {
+            currentAuthorization = UserAuthorizationType.UnAuthorizationUser;
         }
-
-        return result;
+        
+        return requiredAuthorization % currentAuthorization === 0;
     };
 
     module.exports = UserAuthorizationType;

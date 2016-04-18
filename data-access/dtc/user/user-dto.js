@@ -4,10 +4,12 @@
     function UserDTO(obj) {
 
         if (obj !== null) {
+            this.id = obj.id;
             this.mobile = obj.mobile;
             this.password = obj.password;
             this.fullName = obj.fullName;
             this.createdWhen = obj.createdWhen;
+            this.authorizationType = obj.authorizationType;
         }
 
     };

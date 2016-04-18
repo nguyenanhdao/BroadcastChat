@@ -76,7 +76,12 @@ var ResponseCode = Rfr('api-v1/response-code.js');
     **/
     BaseAPI.prototype.doRun = function (request, response) {
         // Validate user authorization first
-        var userAuthorizationType = request.body.userAuthorizationType;
+        var userAuthorizationType = null;
+
+        if (!Util.isNullOrUndefined(request.user)) {
+            userAuthorizationType = request.user.authorizationType;
+        }
+
         if (!UserAuthorizationType.isEqual(userAuthorizationType, this.getRequiredAuthorization())) {
             throw 'Access Denined.';
         };
@@ -126,7 +131,7 @@ var ResponseCode = Rfr('api-v1/response-code.js');
     BaseAPI.prototype.sendSimpleSuccessReponse = function (response) {
         response.send({
             code: 'ok',
-            message: ErrorCode.getMessage('ok'),
+            message: ResponseCode.getMessage('ok'),
             isError: false
         });
         response.end();

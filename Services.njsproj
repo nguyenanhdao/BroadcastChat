@@ -34,12 +34,16 @@
     <Compile Include="api-v1\base-api.js" />
     <Compile Include="api-v1\base-router.js" />
     <Compile Include="api-v1\main-router.js" />
+    <Compile Include="api-v1\public-message\create-api.js" />
+    <Compile Include="api-v1\public-message\router.js" />
     <Compile Include="api-v1\response-code.js" />
     <Compile Include="api-v1\user-authorization-type.js" />
     <Compile Include="api-v1\user\login-api.js" />
     <Compile Include="api-v1\user\logout-api.js" />
     <Compile Include="api-v1\user\register-api.js" />
     <Compile Include="api-v1\user\router.js" />
+    <Compile Include="data-access\dtc\public-message-reply\public-message-reply-dtc.js" />
+    <Compile Include="data-access\dtc\public-message-reply\public-message-reply-dto.js" />
     <Compile Include="data-access\dtc\public-message\public-message-dtc.js" />
     <Compile Include="data-access\dtc\public-message\public-message-dto.js" />
     <Compile Include="data-access\dtc\user-location\user-location-dtc.js" />
@@ -67,11 +71,13 @@
     <Compile Include="data-access\dtc\user\user-dto.js" />
     <Compile Include="socket\socket.js" />
     <Compile Include="unit-tests\base-test.js" />
+    <Compile Include="unit-tests\data-access\dtc\public-message-reply-dtc-tests.js" />
     <Compile Include="unit-tests\data-access\dtc\public-message-tests.js" />
     <Compile Include="unit-tests\data-access\dtc\user-dtc-tests.js" />
     <Compile Include="unit-tests\data-access\dtc\user-location-dtc-tests.js" />
     <Compile Include="unit-tests\list-unit-tests.js" />
     <Compile Include="unit-tests\test-manager.js" />
+    <Compile Include="unit-tests\unit-test-utils.js" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
     <Content Include="package.json" />
@@ -81,6 +87,7 @@
     <Content Include="views\layout.vash" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="api-v1\public-message\" />
     <Folder Include="api-v1\user\" />
     <Folder Include="content\css\" />
     <Folder Include="content\js\" />
@@ -88,6 +95,7 @@
     <Folder Include="controllers\" />
     <Folder Include="content\" />
     <Folder Include="configuration\" />
+    <Folder Include="data-access\dtc\public-message-reply\" />
     <Folder Include="data-access\dtc\public-message\" />
     <Folder Include="data-access\dtc\user-location\" />
     <Folder Include="data-access\models\" />

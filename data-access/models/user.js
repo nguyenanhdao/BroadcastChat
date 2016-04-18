@@ -31,6 +31,10 @@ var UserLocation = require('./user-location.js');
             type: Date,
             default: Date.now
         },
+        authorizationType: {
+            type: Number,
+            require: true
+        },
         meta: {
             avatarUrl: String
         },

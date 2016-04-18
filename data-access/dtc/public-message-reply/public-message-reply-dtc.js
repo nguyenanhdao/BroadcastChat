@@ -12,7 +12,7 @@ var SystemLog = Rfr('system-log.js').getInstance();
 var BaseDTC = Rfr('data-access/dtc/base-dtc.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
 var Validation = Rfr('data-access/validation');
-var PublicMessageReplyDTO = Rfr('data-access/dtc/public-message/public-message-reply-dto.js');
+var PublicMessageReplyDTO = Rfr('data-access/dtc/public-message-reply/public-message-reply-dto.js');
 var ResponseCode = Rfr('data-access/response-code.js');
 var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
 
@@ -61,7 +61,7 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
      * @return Mongoose object
     **/
     PublicMessageReplyDTC.prototype.mapFromDTO = function (publicMessageReplyDTO) {
-        var publicMessageReplyMO = new PublicMessageMO({
+        var publicMessageReplyMO = new PublicMessageReplyMO({
             message: publicMessageReplyDTO.message,
             longitude: publicMessageReplyDTO.longitude,
             latitude: publicMessageReplyDTO.latitude,
@@ -102,7 +102,8 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
         // Validate publicMessageReplyDTO first
         var errors = _self.validate(publicMessageReplyDTO);
         if (!_.isEmpty(errors)) {
-            return callback(errors);
+            callback(errors);
+            return;
         }
 
         Async.waterfall([
@@ -112,20 +113,25 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
             },
             function (userMO, innerCallback) {
                 if (Util.isNullOrUndefined(userMO)) {
-                    return innerCallback('publicMessageReplyDTCNotExistedUser');
+                    innerCallback('publicMessageReplyDTCNotExistedUser');
+                    return;
                 }
 
-                return innerCallback(null, userMO);
+                innerCallback(null);
             },
 
 
             // Find public message which this reply to
             function (innerCallback) {
-                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, innerCallback);
+                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, function(error, publicMessageMO) {
+                    innerCallback(error, publicMessageMO);
+                });
             },
             function (publicMessageMO, innerCallback) {
+                console.log('Test');
                 if (Util.isNullOrUndefined(publicMessageMO)) {
-                    return innerCallback('publicMessageReplyDTCNotExistedUser');
+                    innerCallback('publicMessageReplyDTCNotExistedUser');
+                    return;
                 }
 
                 return innerCallback(null, publicMessageMO);

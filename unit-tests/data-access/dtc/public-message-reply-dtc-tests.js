@@ -89,24 +89,24 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
     **/
     PublicMessageReplyDTCTests.prototype.createNew = function (callback) {
         var _self = this;
-        var publicMessageDTO = new PublicMessageDTO({
-            message: 'unittest',
-            longitude: 11.23,
-            latitude: 12.13,
+        var publicMessageReplyDTO = new PublicMessageReplyDTO({
+            message: 'unittest for public message reply',
+            longitude: 11.212313,
+            latitude: 12.112313,
             createdWhen: new Date(),
             createdWho: '0914090540'
         });
 
         Async.waterfall([
             function (innerCallback) {
-                PublicMessageDTC.getInstance().createNew(publicMessageDTO, function (error, dto) {
-                    publicMessageDTO = dto;
+                PublicMessageReplyDTC.getInstance().createNew(_self._publicMessageDTO.id, publicMessageReplyDTO, function (error, dto) {
+                    publicMessageReplyDTO = dto;
                     innerCallback(error);
                 });
             },
 
             function (innerCallback) {
-                DatabaseContext.PublicMessage.findOne({ _id: publicMessageDTO.id }, function (error, publicMessageMO) {
+                DatabaseContext.PublicMessage.findOne({ _id: _self._publicMessageDTO.id }, function (error, publicMessageMO) {
                     innerCallback(error, publicMessageMO);
                 });
             },
@@ -117,12 +117,12 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
                     Assert.fail();
                 }
 
-                Assert.equal(publicMessageMO._id, publicMessageDTO.id);
-                Assert.equal(publicMessageMO.longitude, publicMessageDTO.longitude);
-                Assert.equal(publicMessageMO.latitude, publicMessageDTO.latitude);
-                Assert.equal(publicMessageMO.createdWho, publicMessageDTO.createdWho);
-                Assert.equal(publicMessageMO.message, publicMessageDTO.message);
-                Assert.equal((new Date(publicMessageMO.createdWhen)).getTime(), publicMessageDTO.createdWhen.getTime());
+                Assert.equal(publicMessageMO.publicMessageReply[0]._id, publicMessageReplyDTO.id);
+                Assert.equal(publicMessageMO.publicMessageReply[0].longitude, publicMessageReplyDTO.longitude);
+                Assert.equal(publicMessageMO.publicMessageReply[0].latitude, publicMessageReplyDTO.latitude);
+                Assert.equal(publicMessageMO.publicMessageReply[0].createdWho, publicMessageReplyDTO.createdWho);
+                Assert.equal(publicMessageMO.publicMessageReply[0].message, publicMessageReplyDTO.message);
+                Assert.equal((new Date(publicMessageMO.publicMessageReply[0].createdWhen)).getTime(), publicMessageReplyDTO.createdWhen.getTime());
                 innerCallback(null);
             }
         ],
@@ -136,35 +136,13 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
     };
 
     /**
-     *
-    **/
-    PublicMessageDTCTests.prototype.validate = function (callback) {
-        var _self = this;
-
-        // Validate required field
-        var publicMessageDTO = new PublicMessageDTO({
-        });
-
-        var validationErrors = PublicMessageDTC.getInstance().validate(publicMessageDTO);
-        Assert.notEqual(_.indexOf(validationErrors, 'Message is required.'), -1);
-        Assert.notEqual(_.indexOf(validationErrors, 'Longitude is required.'), -1);
-        Assert.notEqual(_.indexOf(validationErrors, 'Latitude is required.'), -1);
-        Assert.notEqual(_.indexOf(validationErrors, 'Created When is required.'), -1);
-        Assert.notEqual(_.indexOf(validationErrors, 'Created Who is required.'), -1);
-
-        SystemLog.info(_self._name + ' - test case - validate passed the test.');
-        callback(null);
-    };
-
-    /**
      * Override doTest function of base-test to run test case
     **/
-    PublicMessageDTCTests.prototype.doTest = function (callback) {
+    PublicMessageReplyDTCTests.prototype.doTest = function (callback) {
         var _self = this;
 
         Async.waterfall([
-            _self.createNew.bind(_self),
-            _self.validate.bind(_self)
+            _self.createNew.bind(_self)
         ],
 
         function (error) {
@@ -173,5 +151,5 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
     };
 
 
-    module.exports = PublicMessageDTCTests;
+    module.exports = PublicMessageReplyDTCTests;
 })(module);

@@ -40,6 +40,12 @@
     <Compile Include="api-v1\user\logout-api.js" />
     <Compile Include="api-v1\user\register-api.js" />
     <Compile Include="api-v1\user\router.js" />
+    <Compile Include="data-access\dtc\public-message\public-message-dtc.js" />
+    <Compile Include="data-access\dtc\public-message\public-message-dto.js" />
+    <Compile Include="data-access\dtc\user-location\user-location-dtc.js" />
+    <Compile Include="data-access\dtc\user-location\user-location-dto.js" />
+    <Compile Include="data-access\models\public-message.js" />
+    <Compile Include="data-access\models\user-location.js" />
     <Compile Include="data-access\response-code.js" />
     <Compile Include="system-log.js" />
     <Compile Include="configuration.js" />
@@ -61,7 +67,9 @@
     <Compile Include="data-access\dtc\user\user-dto.js" />
     <Compile Include="socket\socket.js" />
     <Compile Include="unit-tests\base-test.js" />
+    <Compile Include="unit-tests\data-access\dtc\public-message-tests.js" />
     <Compile Include="unit-tests\data-access\dtc\user-dtc-tests.js" />
+    <Compile Include="unit-tests\data-access\dtc\user-location-dtc-tests.js" />
     <Compile Include="unit-tests\list-unit-tests.js" />
     <Compile Include="unit-tests\test-manager.js" />
     <Content Include=".bowerrc" />
@@ -80,6 +88,8 @@
     <Folder Include="controllers\" />
     <Folder Include="content\" />
     <Folder Include="configuration\" />
+    <Folder Include="data-access\dtc\public-message\" />
+    <Folder Include="data-access\dtc\user-location\" />
     <Folder Include="data-access\models\" />
     <Folder Include="data-access\dtc\" />
     <Folder Include="data-access\validation\" />

@@ -55,6 +55,8 @@ var UserMO = DatabaseContext.User;
         Validation.isRequired('Password', userDTO.password, errors);
         Validation.isRequired('Full Name', userDTO.fullName, errors);
 
+        Validation.isRequired('Created When', userDTO.createdWhen, errors);
+
         return errors;
     };
 
@@ -67,7 +69,8 @@ var UserMO = DatabaseContext.User;
         var userMO = new UserMO({
             mobile: userDTO.mobile,
             password: userDTO.password,
-            fullName: userDTO.fullName
+            fullName: userDTO.fullName,
+            createdWhen: userDTO.createdWhen
         });
 
         return userMO;
@@ -81,7 +84,8 @@ var UserMO = DatabaseContext.User;
         var userDTO = new UserDTO({
             mobile: mongooseObject.mobile,
             password: mongooseObject.password,
-            fullName: mongooseObject.fullName
+            fullName: mongooseObject.fullName,
+            createdWhen: new Date(mongooseObject.createdWhen)
         });
 
         return userDTO;

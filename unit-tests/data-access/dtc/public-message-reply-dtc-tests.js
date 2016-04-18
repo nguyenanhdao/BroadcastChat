@@ -136,12 +136,32 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
     };
 
     /**
+     * Test for validate function
+    **/
+    PublicMessageReplyDTCTests.prototype.validate = function (callback) {
+        var _self = this;
+
+        // Validate required field
+        var publicMessageReplyDTO = new PublicMessageReplyDTO({
+        });
+
+        var validationErrors = PublicMessageReplyDTC.getInstance().validate(publicMessageReplyDTO);
+        Assert.notEqual(_.indexOf(validationErrors, 'Message is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Created When is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Created Who is required.'), -1);
+
+        SystemLog.info(_self._name + ' - test case - validate passed the test.');
+        callback(null);
+    };
+
+    /**
      * Override doTest function of base-test to run test case
     **/
     PublicMessageReplyDTCTests.prototype.doTest = function (callback) {
         var _self = this;
 
         Async.waterfall([
+            _self.validate.bind(_self),
             _self.createNew.bind(_self)
         ],
 

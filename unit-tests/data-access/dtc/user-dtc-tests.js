@@ -16,7 +16,7 @@ var UnitTestUtils = Rfr('unit-tests/unit-test-utils.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
 var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var UserMO = DatabaseContext.User;
-
+var AuthorizationType = Rfr('api-v1/user-authorization-type.js');
 
 (function (module) {
 
@@ -87,7 +87,8 @@ var UserMO = DatabaseContext.User;
             mobile: '01294419331',
             fullName: 'UnitTest createnew user',
             password: 'UnitTest createnew password',
-            createdWhen: new Date()
+            createdWhen: new Date(),
+            authorizationType: AuthorizationType.AuthorizationUser
         });
 
         Async.waterfall([

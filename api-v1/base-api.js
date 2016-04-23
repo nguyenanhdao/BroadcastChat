@@ -11,6 +11,7 @@ var BodyParser = require('body-parser');
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var ResponseCode = Rfr('api-v1/response-code.js');
+var SystemLog = Rfr('system-log.js');
 
 (function (module) {
     /**
@@ -76,12 +77,23 @@ var ResponseCode = Rfr('api-v1/response-code.js');
     **/
     BaseAPI.prototype.doRun = function (request, response) {
         // Validate user authorization first
-        var userAuthorizationType = request.body.userAuthorizationType;
+        var userAuthorizationType = null;
+
+        if (!Util.isNullOrUndefined(request.user)) {
+            userAuthorizationType = request.user.authorizationType;
+        }
+
         if (!UserAuthorizationType.isEqual(userAuthorizationType, this.getRequiredAuthorization())) {
-            throw 'Access Denined.';
+            this.sendErrorResponse(response, 'accessDenied');
+            return;
         };
 
-        this.run(request, response, this);
+        try {
+            this.run(request, response, this);
+        } catch (exception) {
+            SystemLog.getInstance().error('Internal server error', exception);
+            this.sendErrorResponse(response, 'internalError');
+        }
     };
 
     /**
@@ -126,7 +138,7 @@ var ResponseCode = Rfr('api-v1/response-code.js');
     BaseAPI.prototype.sendSimpleSuccessReponse = function (response) {
         response.send({
             code: 'ok',
-            message: ErrorCode.getMessage('ok'),
+            message: ResponseCode.getMessage('ok'),
             isError: false
         });
         response.end();

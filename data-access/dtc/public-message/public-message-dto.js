@@ -2,7 +2,7 @@
 
     function PublicMessageReplyDTO (obj) {
         if (obj !== null) {
-            this.id = obj._id;
+            this.id = obj.id;
             this.message = obj.message;
             this.longitude = obj.longitude;
             this.latitude = obj.latitude;

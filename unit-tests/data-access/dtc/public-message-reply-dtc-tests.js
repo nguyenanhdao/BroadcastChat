@@ -136,6 +136,52 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
     };
 
     /**
+     * Test delete public message reply
+    **/
+    PublicMessageReplyDTCTests.prototype.delete = function (callback) {
+        var _self = this;
+        var publicMessageReplyDTO = new PublicMessageReplyDTO({
+            message: 'unittest for public message reply',
+            longitude: 11.212313,
+            latitude: 12.112313,
+            createdWhen: new Date(),
+            createdWho: '0914090540'
+        });
+        var publicMessageReplyId = null;
+
+        Async.waterfall([
+            // Create new public reply message and try to delete it
+            function (innerCallback) {
+                PublicMessageReplyDTC.getInstance().createNew(_self._publicMessageDTO.id, publicMessageReplyDTO, function (error, dto) {
+                    publicMessageReplyDTO = dto;
+                    publicMessageReplyId = dto.id;
+                    innerCallback(error);
+                });
+            },
+            function (innerCallback) {
+                PublicMessageReplyDTC.getInstance().delete(_self._publicMessageDTO.id, publicMessageReplyDTO.id, function(error) {
+                    innerCallback(error);
+                });
+            },
+
+            // Check again
+            function (innerCallback) {
+                DatabaseContext.PublicMessage.findOne({ _id: _self._publicMessageDTO.id }, function (error, publicMessageMO) {
+                    Assert.ok(Util.isNullOrUndefined(publicMessageMO.publicMessageReply.id(publicMessageReplyId)));
+                    innerCallback(null);
+                });
+            }
+        ],
+
+        function (error) {
+            Assert.ifError(error);
+
+            SystemLog.info(_self._name + ' - test case - delete passed the test.');
+            callback(null);
+        });
+    };
+
+    /**
      * Test for validate function
     **/
     PublicMessageReplyDTCTests.prototype.validate = function (callback) {
@@ -162,7 +208,8 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
 
         Async.waterfall([
             _self.validate.bind(_self),
-            _self.createNew.bind(_self)
+            _self.createNew.bind(_self),
+            _self.delete.bind(_self)
         ],
 
         function (error) {

@@ -18,7 +18,7 @@ var BaseAPI = Rfr('api-v1/base-api.js');
     **/
     function LogoutAPI(parentRouter) {
 
-        BaseAPI.call(this, parentRouter, '/logout', UserAuthorizationType.UnAuthorizationUser);
+        BaseAPI.call(this, parentRouter, '/logout', UserAuthorizationType.AuthorizationAndUnAuthorizationUser);
 
     };
     Util.inherits(LogoutAPI, BaseAPI);

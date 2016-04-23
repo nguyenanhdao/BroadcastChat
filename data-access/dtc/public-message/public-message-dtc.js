@@ -90,6 +90,42 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
 
         return publicMessageDTO;
     };
+    
+    /**
+     * Get public message by id
+     * @param publicMessageId - Pulic message id
+     * @param callback - function (error, publicMessageDTO)
+     * @return public message dto
+     *
+    **/
+    PublicMessageDTC.prototype.getById = function (publicMessageId, callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            function (innerCallback) {
+                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, innerCallback);
+            },
+            function (publicMessageMO, innerCallback) {
+                if (Util.isNullOrUndefined(publicMessageMO)) {
+                    innerCallback('publicMessageDTCNotExistedId');
+                    return;
+                };
+                
+                var publicMessageDTO = _self.mapFromMO(publicMessageMO);
+                innerCallback(null, publicMessageDTO);
+            }
+        ],
+        
+        function (error, publicMessageDTO) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot get public message. Error: ', ResponseCode.getMessage(error));
+                return callback(error);
+            }
+
+            callback(null, publicMessageDTO);
+        });
+    };
 
     /**
      * Create new public message
@@ -141,6 +177,42 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
             }
 
             callback(null, publicMessageDTO);
+        });
+    };
+    
+    /**
+     * Delete public message by id
+     * @param publicMessageId - Pulic message id
+     * @param callback - function (error)
+     *
+    **/
+    PublicMessageDTC.prototype.delete = function (publicMessageId, callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            function (innerCallback) {
+                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, innerCallback);
+            },
+            function (publicMessageMO, innerCallback) {
+                if (Util.isNullOrUndefined(publicMessageMO)) {
+                    innerCallback('publicMessageDTCNotExistedId');
+                    return;
+                };
+                
+                publicMessageMO.remove(function (error) {
+                    innerCallback(error);
+                });
+            }
+        ],
+        
+        function (error) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot delete public message. Error: ', ResponseCode.getMessage(error));
+                return callback(error);
+            }
+
+            callback(null);
         });
     };
 

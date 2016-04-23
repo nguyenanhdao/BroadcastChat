@@ -32,9 +32,10 @@ var BaseAPI = Rfr('api-v1/base-api.js');
         var userDTO = new UserDTO({
             mobile: request.body.mobile,
             password: request.body.password,
-            fullName: request.body.fullName
+            fullName: request.body.fullName,
+            createdWhen: new Date(),
+            authorizationType: UserAuthorizationType.AuthorizationUser
         });
-
 
         UserDTC.getInstance().createNew(userDTO, function (errorCode, data) {
             if (!Util.isNullOrUndefined(errorCode)) {

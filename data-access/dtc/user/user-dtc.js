@@ -55,6 +55,8 @@ var UserMO = DatabaseContext.User;
         Validation.isRequired('Password', userDTO.password, errors);
         Validation.isRequired('Full Name', userDTO.fullName, errors);
 
+        Validation.isRequired('Authorization Type', userDTO.authorizationType, errors);
+
         Validation.isRequired('Created When', userDTO.createdWhen, errors);
 
         return errors;
@@ -70,7 +72,8 @@ var UserMO = DatabaseContext.User;
             mobile: userDTO.mobile,
             password: userDTO.password,
             fullName: userDTO.fullName,
-            createdWhen: userDTO.createdWhen
+            createdWhen: userDTO.createdWhen,
+            authorizationType: userDTO.authorizationType
         });
 
         return userMO;
@@ -82,10 +85,12 @@ var UserMO = DatabaseContext.User;
     **/
     UserDTC.prototype.mapFromMO = function (mongooseObject) {
         var userDTO = new UserDTO({
+            id: mongooseObject._id,
             mobile: mongooseObject.mobile,
             password: mongooseObject.password,
             fullName: mongooseObject.fullName,
-            createdWhen: new Date(mongooseObject.createdWhen)
+            createdWhen: new Date(mongooseObject.createdWhen),
+            authorizationType: mongooseObject.authorizationType
         });
 
         return userDTO;

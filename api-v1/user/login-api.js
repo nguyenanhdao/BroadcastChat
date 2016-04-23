@@ -18,7 +18,7 @@ var BaseAPI = Rfr('api-v1/base-api.js');
     **/
     function LoginAPI(parentRouter) {
 
-        BaseAPI.call(this, parentRouter, '/login', UserAuthorizationType.UnAuthorizationUser, true);
+        BaseAPI.call(this, parentRouter, '/login', UserAuthorizationType.AuthorizationAndUnAuthorizationUser, true);
 
     };
     Util.inherits(LoginAPI, BaseAPI);

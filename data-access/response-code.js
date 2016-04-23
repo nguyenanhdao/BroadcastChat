@@ -21,7 +21,8 @@ var Util = require('util');
 
         'publicMessageDTCNotExistedUser': 'User is not existed.',
         'publicMessageReplyDTCNotExistedUser': 'User is not existed.',
-        'publicMessageReplyDTCNotExistedPublicMessage': 'Public message to reply is not existed.'
+        'publicMessageReplyDTCNotExistedPublicMessage': 'Public message to reply is not existed.',
+        'publicMessageReplyDTCNotExistedPublicMessageReply': 'Public message reply is not existed.'
     };
 
 

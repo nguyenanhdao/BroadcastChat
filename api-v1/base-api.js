@@ -11,6 +11,7 @@ var BodyParser = require('body-parser');
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var ResponseCode = Rfr('api-v1/response-code.js');
+var SystemLog = Rfr('system-log.js');
 
 (function (module) {
     /**
@@ -86,7 +87,12 @@ var ResponseCode = Rfr('api-v1/response-code.js');
             throw 'Access Denined.';
         };
 
-        this.run(request, response, this);
+        try {
+            this.run(request, response, this);
+        } catch (exception) {
+            SystemLog.getInstance().error('Internal server error', exception);
+            this.sendErrorResponse(response, 'internalError');
+        }
     };
 
     /**

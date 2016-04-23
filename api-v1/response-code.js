@@ -20,7 +20,11 @@ var Util = require('util');
         'userLoginMobileIsRequired': 'Mobile field is required.',
         'userLoginNotExistedMobileNumber': 'Mobile number is not existed.',
         'userLoginWrongPassword': 'Wrong password.',
-        'userRegisterValidationFailed': 'Validation failed.'
+        'userRegisterValidationFailed': 'Validation failed.',
+        'publicMessageReplyDeletePublicMessageReplyPublicMessageIdIsRequired': 'Public Message Id is required.',
+        'publicMessageReplyDeletePublicMessageReplyPublicMessageReplyIdIsRequired': 'Public Message Reply Id is required.',
+        'publicMessageReplyDeletePublicMessageReplyWrongMobileNumber': 'This message does not belong to user.',
+        'publicMessageReplyDeletePublicMessageReplyNotExisted': 'Public message reply is not existed.'
     };
 
 

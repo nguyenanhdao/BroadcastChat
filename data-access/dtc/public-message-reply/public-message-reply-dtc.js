@@ -88,6 +88,53 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
 
         return publicMessageReplyDTO;
     };
+    
+    /**
+     * Get public reply mesesage by id
+     * @param publicMessageId - public message id
+     * @param publicMessageReplyId - public message reply id
+     * @param callback - function (error)
+     * @return public message reply dto
+    */
+    PublicMessageReplyDTC.prototype.getById = function (publicMessageId, publicMessageReplyId, callback) {
+        var _self = this;
+        var publicMessageReplyDTO = null;
+        
+        Async.waterfall([
+            function (innerCallback) {
+                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, innerCallback);
+            },
+            function (publicMessageMO, innerCallback) {
+                if (Util.isNullOrUndefined(publicMessageMO)) {
+                    innerCallback('publicMessageReplyDTCNotExistedPublicMessage');
+                    return;
+                };
+                
+                innerCallback(null, publicMessageMO.publicMessageReply.id(publicMessageReplyId));
+            },
+            
+            function (publicMessageReplyMO, innerCallback) {
+                if (Util.isNullOrUndefined(publicMessageReplyMO)) {
+                    innerCallback('publicMessageReplyDTCNotExistedPublicMessageReply');
+                    return;
+                };
+                
+                publicMessageReplyDTO = _self.mapFromMO(publicMessageReplyMO);
+                innerCallback(null, publicMessageReplyDTO);
+            }
+        ],
+        
+        function (error) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot get public reply message.', ResponseCode.getMessage(error));
+                callback(error);
+                return;
+            }
+
+            callback(null, publicMessageReplyDTO);
+        });
+    };
 
     /**
      * Create new public message reply

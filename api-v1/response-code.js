@@ -15,12 +15,20 @@ var Util = require('util');
 
         // Internal server error
         'internalError': 'Internal server error.',
+        
+        // Security stuff
+        'accessDenied': 'Access Denined.',
 
         // API Errors
         'userLoginMobileIsRequired': 'Mobile field is required.',
         'userLoginNotExistedMobileNumber': 'Mobile number is not existed.',
         'userLoginWrongPassword': 'Wrong password.',
         'userRegisterValidationFailed': 'Validation failed.',
+        
+        'publicMessageDeletePublicMessageIdIsRequired': 'Public Message Id is required.',
+        'publicMessageDeletePublicMessageNotExisted': 'Public Message is not existed',
+        'publicMessageDeletePublicMessageWrongMobileNumber': 'This message does not belong to user.',
+        
         'publicMessageReplyDeletePublicMessageReplyPublicMessageIdIsRequired': 'Public Message Id is required.',
         'publicMessageReplyDeletePublicMessageReplyPublicMessageReplyIdIsRequired': 'Public Message Reply Id is required.',
         'publicMessageReplyDeletePublicMessageReplyWrongMobileNumber': 'This message does not belong to user.',

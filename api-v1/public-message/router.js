@@ -23,7 +23,7 @@ var BaseRouter = Rfr('api-v1/base-router.js');
 
         // PUBLIC MESSAGE API
         this.registerAPI(require('./create-api.js'));     // public-message/create
-
+        this.registerAPI(require('./delete-api.js'));     // public-message/delete
     };
 
     module.exports = Router;

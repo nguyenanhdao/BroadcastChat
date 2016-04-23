@@ -84,7 +84,8 @@ var SystemLog = Rfr('system-log.js');
         }
 
         if (!UserAuthorizationType.isEqual(userAuthorizationType, this.getRequiredAuthorization())) {
-            throw 'Access Denined.';
+            this.sendErrorResponse(response, 'accessDenied');
+            return;
         };
 
         try {

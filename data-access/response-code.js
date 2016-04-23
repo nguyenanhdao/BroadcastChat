@@ -19,6 +19,7 @@ var Util = require('util');
         'userDTCDuplicatedMobileNumber': 'Duplicated mobile number.',
         'userLocationDTCNotExistedUser': 'User is not existed.',
 
+        'publicMessageDTCNotExistedId': 'Public message with provided id is not existed.',
         'publicMessageDTCNotExistedUser': 'User is not existed.',
         'publicMessageReplyDTCNotExistedUser': 'User is not existed.',
         'publicMessageReplyDTCNotExistedPublicMessage': 'Public message to reply is not existed.',

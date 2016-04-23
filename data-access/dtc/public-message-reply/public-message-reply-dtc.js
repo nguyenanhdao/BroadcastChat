@@ -165,5 +165,52 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
         });
     };
 
+    PublicMessageReplyDTC.prototype.delete = function (publicMessageId, publicMessageReplyId, callback) {
+        var _self = this;
+        var _publicMessageMO = null;
+
+        Async.waterfall([
+            // Find user by their mobile
+            function (innerCallback) {
+                DatabaseContext.PublicMessage.findOne({ _id: publicMessageId }, innerCallback);
+            },
+            function (publicMessageMO, innerCallback) {
+                if (Util.isNullOrUndefined(publicMessageMO)) {
+                    innerCallback('publicMessageReplyDTCNotExistedPublicMessage');
+                    return;
+                }
+
+                _publicMessageMO = publicMessageMO;
+                innerCallback(null, _publicMessageMO.publicMessageReply.id(publicMessageReplyId));
+            },
+
+
+            // Find public message which this reply to
+            function (publicMessageReplyMO, innerCallback) {
+                publicMessageReplyMO.remove(function (error) {
+                    innerCallback(error);
+                });
+            },
+            function (innerCallback) {
+                _publicMessageMO.save(function (error) {
+                    innerCallback(error);
+                });
+            }
+        ],
+
+
+        // Final callback
+        function (error) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot delete public message reply. Error: ', ResponseCode.getMessage(error));
+                return callback(ResponseCode.getMessage(error), null);
+            }
+
+            _publicMessageMO = null;
+            callback(null);
+        });
+    };
+
     module.exports = PublicMessageReplyDTC;
 })(module);

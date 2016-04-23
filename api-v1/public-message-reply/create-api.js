@@ -26,10 +26,11 @@ var BaseAPI = Rfr('api-v1/base-api.js');
      * Create new public message api
     **/
     CreateAPI.prototype.run = function (request, response, _self) {
-        var PublicMessageDTC = Rfr('data-access/dtc/public-message/public-message-dtc.js');
-        var PublicMessageDTO = Rfr('data-access/dtc/public-message/public-message-dto.js');
-
-        var publicMessageDTO = new PublicMessageDTO({
+        var PublicMessageReplyDTC = Rfr('data-access/dtc/public-message-reply/public-message-reply-dtc.js');
+        var PublicMessageReplyDTO = Rfr('data-access/dtc/public-message-reply/public-message-reply-dto.js');
+        
+        var publicMessageId = request.body.publicMessageId;
+        var publicMessageReplyDTO = new PublicMessageReplyDTO({
             message: request.body.message,
             longitude: request.body.longitude,
             latitude: request.body.latitude,
@@ -38,7 +39,7 @@ var BaseAPI = Rfr('api-v1/base-api.js');
         });
 
 
-        PublicMessageDTC.getInstance().createNew(publicMessageDTO, function (errorCode, data) {
+        PublicMessageReplyDTC.getInstance().createNew(publicMessageId, publicMessageReplyDTO, function (errorCode, data) {
             if (!Util.isNullOrUndefined(errorCode)) {
                 _self.sendErrorResponse(response, errorCode, data);
             } else {

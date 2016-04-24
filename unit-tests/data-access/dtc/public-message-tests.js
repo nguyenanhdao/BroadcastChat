@@ -72,7 +72,7 @@ var UserMO = DatabaseContext.User;
             longitude: 11.23,
             latitude: 12.13,
             createdWhen: new Date(),
-            createdWho: '0914090540'
+            createdWho: _self._unitTestUser.id
         });
 
         Async.waterfall([

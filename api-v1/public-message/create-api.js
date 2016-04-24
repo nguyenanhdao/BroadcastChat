@@ -34,7 +34,7 @@ var BaseAPI = Rfr('api-v1/base-api.js');
             longitude: request.body.longitude,
             latitude: request.body.latitude,
             createdWhen: new Date(),
-            createdWho: request.user.mobile
+            createdWho: request.user.id
         });
 
 

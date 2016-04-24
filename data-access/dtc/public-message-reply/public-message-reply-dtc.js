@@ -154,9 +154,9 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
         }
 
         Async.waterfall([
-            // Find user by their mobile
+            // Find user by their id
             function (innerCallback) {
-                DatabaseContext.User.findOne({ mobile: publicMessageReplyDTO.createdWho }, innerCallback);
+                DatabaseContext.User.findOne({ _id: publicMessageReplyDTO.createdWho }, innerCallback);
             },
             function (userMO, innerCallback) {
                 if (Util.isNullOrUndefined(userMO)) {

@@ -76,13 +76,13 @@ var UserMO = DatabaseContext.User;
         Async.waterfall([
             function (innerCallback) {
                 var DTC = UserLocationDTC.getInstance();
-                DTC.createNew(_self._unitTestUser.mobile, newUserLocation, function (error) {
+                DTC.createNew(_self._unitTestUser.id, newUserLocation, function (error) {
                     innerCallback(error);
                 });
             },
 
             function (innerCallback) {
-                DatabaseContext.User.findOne({ mobile: _self._unitTestUser.mobile }, function (error, userMO) {
+                DatabaseContext.User.findOne({ _id: _self._unitTestUser.id }, function (error, userMO) {
                     innerCallback(error, userMO);
                 });
             },

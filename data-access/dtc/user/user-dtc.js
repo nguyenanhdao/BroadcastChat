@@ -122,14 +122,20 @@ var UserMO = DatabaseContext.User;
                 if (!Util.isNullOrUndefined(userMO)) {
                     return innerCallback('userDTCDuplicatedMobileNumber');
                 }
-
+                
                 return innerCallback(null);
             },
 
             // Add new user if mobile number is not registered yet
             function (innerCallback) {
                 var userMO = _self.mapFromDTO(userDTO);
-                userMO.save(innerCallback);
+                userMO.save(function (error) {
+                    if (Util.isNullOrUndefined(error)) {
+                        userDTO = _self.mapFromMO(userMO);
+                    }
+                    
+                    innerCallback(error);
+                });
             }
         ],
 

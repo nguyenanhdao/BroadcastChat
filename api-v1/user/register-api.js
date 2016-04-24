@@ -8,7 +8,7 @@ var Rfr = require('rfr');
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var BaseAPI = Rfr('api-v1/base-api.js');
-
+var UserStatus = Rfr('data-access/dtc/user/user-status.js');
 
 (function (module) {
     /**
@@ -21,6 +21,12 @@ var BaseAPI = Rfr('api-v1/base-api.js');
     };
     Util.inherits(RegisterAPI, BaseAPI);
 
+    /**
+     * Get required user status to run this service api
+    **/
+    RegisterAPI.prototype.getRequiredStatus = function () {
+        return UserStatus.Any;
+    };
 
     /**
      * Register new user
@@ -34,7 +40,12 @@ var BaseAPI = Rfr('api-v1/base-api.js');
             password: request.body.password,
             fullName: request.body.fullName,
             createdWhen: new Date(),
-            authorizationType: UserAuthorizationType.AuthorizationUser
+            authorizationType: UserAuthorizationType.AuthorizationUser,
+            
+            // FIX-ME
+            // By default, create user has status as WaitForActivation
+            // But in dev mode, just let them active user
+            status: UserStatus.ActiveUser
         });
 
         UserDTC.getInstance().createNew(userDTO, function (errorCode, data) {

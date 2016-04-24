@@ -7,11 +7,14 @@ var Util = require('util');
 var Rfr = require('rfr');
 var Promise = require('promise');
 var BodyParser = require('body-parser');
+var Async = require('async');
 
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var ResponseCode = Rfr('api-v1/response-code.js');
 var SystemLog = Rfr('system-log.js');
+var UserStatus = Rfr('data-access/dtc/user/user-status.js');
+var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
 
 (function (module) {
     /**
@@ -57,6 +60,16 @@ var SystemLog = Rfr('system-log.js');
         return this._requiredAuthorizationType;
 
     };
+    
+    /**
+     * Get required user status to run this API service
+     * @return required user status t run this API service
+    */
+    BaseAPI.prototype.getRequiredStatus = function () {
+        
+        throw 'getRequiredStatus is not implemented';
+        
+    };
 
     /**
      * Get APIRoute
@@ -76,24 +89,63 @@ var SystemLog = Rfr('system-log.js');
      * Run processing function with checking required authorization
     **/
     BaseAPI.prototype.doRun = function (request, response) {
-        // Validate user authorization first
-        var userAuthorizationType = null;
-
-        if (!Util.isNullOrUndefined(request.user)) {
-            userAuthorizationType = request.user.authorizationType;
-        }
-
-        if (!UserAuthorizationType.isEqual(userAuthorizationType, this.getRequiredAuthorization())) {
-            this.sendErrorResponse(response, 'accessDenied');
-            return;
-        };
-
-        try {
-            this.run(request, response, this);
-        } catch (exception) {
-            SystemLog.getInstance().error('Internal server error', exception);
-            this.sendErrorResponse(response, 'internalError');
-        }
+        var _self = this;
+        
+        Async.waterfall([
+            // Validate user authorization first (login or not login)
+            function (innerCallback) {
+                var userAuthorizationType = Util.isNullOrUndefined(request.user) ? null : request.user.authorizationType;
+                if (!UserAuthorizationType.isEqual(userAuthorizationType, _self.getRequiredAuthorization())) {
+                    innerCallback('accessDenied');
+                    return;
+                };
+                
+                innerCallback(null);
+            },
+            
+            // Validate user status
+            function (innerCallback) {
+                var requiredUserStatus = _self.getRequiredStatus();
+                var userId = Util.isNullOrUndefined(request.user) ? null : request.user.id;
+                
+                if (Util.isNullOrUndefined(userId) && requiredUserStatus === UserStatus.Any) {
+                    innerCallback(null);
+                } else if (Util.isNullOrUndefined(userId)) {
+                    innerCallback('accessDenied');
+                } else {
+                    UserDTC.getInstance().getById(userId, function (error, userDTO) {
+                        if (!Util.isNullOrUndefined(error)) {
+                            SystemLog.getInstance().error('Internal server error', error);
+                            innerCallback('internalError');
+                            return;
+                        };
+                        
+                        if (!UserStatus.isLegal(userDTO.status, requiredUserStatus)) {
+                            innerCallback('ilegalUserStatus');
+                            return;
+                        };
+                        
+                        innerCallback(null);
+                    });
+                }
+            }
+        ], function (error) {
+            // Check for error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.getInstance().error('Internal server error', error);
+                _self.sendErrorResponse(response, 'internalError');
+                return;
+            };
+            
+            
+            // Execute service api
+            try {
+                _self.run(request, response, _self);
+            } catch (exception) {
+                SystemLog.getInstance().error('Internal server error', exception);
+                _self.sendErrorResponse(response, 'internalError');
+            }
+        });
     };
 
     /**

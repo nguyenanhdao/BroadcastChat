@@ -13,7 +13,8 @@ var Rfr = require('rfr');
 var Util = require('util');
 
 // Internal modules
-var SystemLog = Rfr('system-log.js');
+var SystemLog = Rfr('system-log.js').getInstance();
+var UserStatus = Rfr('data-access/dtc/user/user-status.js');
 
 (function (passportConfiguration) {
 
@@ -54,8 +55,9 @@ var SystemLog = Rfr('system-log.js');
                         callback('internalError', null);
                     }
                     
-                    // Check that user existed or not
-                    if (Util.isNullOrUndefined(userDTO)) {
+                    if (userDTO.status === UserStatus.LockedUser) {
+                        callback('lockedUser');
+                    } else if (Util.isNullOrUndefined(userDTO)) {
                         callback('userLoginNotExistedMobileNumber');
                     } else if (password !== userDTO.password) {
                         callback('loginWrongMobileOrPassword');

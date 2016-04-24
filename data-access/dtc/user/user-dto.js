@@ -9,6 +9,7 @@
             this.password = obj.password;
             this.fullName = obj.fullName;
             this.createdWhen = obj.createdWhen;
+            this.status = obj.status;
             this.authorizationType = obj.authorizationType;
         }
 

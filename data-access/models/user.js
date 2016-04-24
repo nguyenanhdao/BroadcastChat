@@ -35,6 +35,11 @@ var UserLocation = require('./user-location.js');
             type: Number,
             require: true
         },
+        status: {
+            type: Number,
+            require: true
+        },
+        
         meta: {
             avatarUrl: String
         },

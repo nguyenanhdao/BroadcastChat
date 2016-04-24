@@ -18,6 +18,8 @@ var Util = require('util');
         
         // Security stuff
         'accessDenied': 'Access Denined.',
+        'ilegalUserStatus': 'Ilegal user status.',
+        'lockedUser': 'User account has been locked.',
         'loginWrongMobileOrPassword': 'Wrong mobile number or password',
 
         // API Errors

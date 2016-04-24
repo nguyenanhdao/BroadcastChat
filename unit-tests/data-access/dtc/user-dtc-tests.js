@@ -17,6 +17,7 @@ var DatabaseContext = Rfr('data-access/database-context.js');
 var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var UserMO = DatabaseContext.User;
 var AuthorizationType = Rfr('api-v1/user-authorization-type.js');
+var UserStatus = Rfr('data-access/dtc/user/user-status.js');
 
 (function (module) {
 
@@ -88,7 +89,8 @@ var AuthorizationType = Rfr('api-v1/user-authorization-type.js');
             fullName: 'UnitTest createnew user',
             password: 'UnitTest createnew password',
             createdWhen: new Date(),
-            authorizationType: AuthorizationType.AuthorizationUser
+            authorizationType: AuthorizationType.AuthorizationUser,
+            status: UserStatus.ActiveUser
         });
 
         Async.waterfall([
@@ -149,6 +151,7 @@ var AuthorizationType = Rfr('api-v1/user-authorization-type.js');
         Assert.notEqual(_.indexOf(validationErrors, 'Password is required.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Full Name is required.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Created When is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Status is required.'), -1);
 
         // Validate custom validation
         newUser = new UserDTO({

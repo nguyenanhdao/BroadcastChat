@@ -8,7 +8,7 @@ var Rfr = require('rfr');
 // Internal library
 var UserAuthorizationType = Rfr('api-v1/user-authorization-type.js');
 var BaseAPI = Rfr('api-v1/base-api.js');
-
+var UserStatus = Rfr('data-access/dtc/user/user-status');
 
 (function (module) {
     /**
@@ -20,7 +20,13 @@ var BaseAPI = Rfr('api-v1/base-api.js');
 
     };
     Util.inherits(CreateAPI, BaseAPI);
-
+    
+    /**
+     * Get required user status to run this service api
+    */
+    CreateAPI.prototype.getRequiredStatus = function () {
+        return UserStatus.ActiveUser;
+    };
 
     /**
      * Create new public message api

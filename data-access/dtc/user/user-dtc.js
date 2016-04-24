@@ -122,14 +122,20 @@ var UserMO = DatabaseContext.User;
                 if (!Util.isNullOrUndefined(userMO)) {
                     return innerCallback('userDTCDuplicatedMobileNumber');
                 }
-
+                
                 return innerCallback(null);
             },
 
             // Add new user if mobile number is not registered yet
             function (innerCallback) {
                 var userMO = _self.mapFromDTO(userDTO);
-                userMO.save(innerCallback);
+                userMO.save(function (error) {
+                    if (Util.isNullOrUndefined(error)) {
+                        userDTO = _self.mapFromMO(userMO);
+                    }
+                    
+                    innerCallback(error);
+                });
             }
         ],
 
@@ -213,6 +219,43 @@ var UserMO = DatabaseContext.User;
             }
 
             return callback(null, result);
+        });
+    };
+    
+    /**
+     * Get user dto by user's id
+     * @param mobile - user id
+     * @param callback (error, userDTO) - callback with error handle and userDTO returned
+     *
+    **/
+    UserDTC.prototype.getById = function (userId, callback) {
+        var _self = this;
+
+        Async.waterfall([
+            function (innerCallback) {
+                DatabaseContext.User.findOne({ _id: userId }, innerCallback);
+            },
+
+            function (userMO, innerCallback) {
+                if (Util.isNullOrUndefined(userMO)) {
+                    innerCallback('userDTCNotExistedUser');
+                    return;
+                }
+
+                var userDTO = _self.mapFromMO(userMO);  
+                innerCallback(null, userDTO);
+            }
+        ],
+
+        function (error, userDTO) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot find user by user\'s id: ' + userId, error);
+                callback(error);
+                return;
+            }
+
+            callback(null, userDTO);
         });
     };
 

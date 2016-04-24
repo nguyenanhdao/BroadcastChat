@@ -76,6 +76,7 @@ var UserLocationMO = DatabaseContext.UserLocation;
     **/
     UserLocationDTC.prototype.mapFromMO = function (mongooseObject) {
         var userLocationDTO = new UserLocationDTO({
+            id: mongooseObject._id,
             longitude: mongooseObject.longitude,
             latitude: mongooseObject.latitude,
             createdWhen: new Date(mongooseObject.createdWhen)
@@ -86,12 +87,12 @@ var UserLocationMO = DatabaseContext.UserLocation;
 
     /**
      * Create new user location log
-     * @param mobile user's mobile
+     * @param id user's id
      * @param userLocationDTO user location dto
      * @param callback (error, results)
      *
     **/
-    UserLocationDTC.prototype.createNew = function (mobile, userLocationDTO, callback) {
+    UserLocationDTC.prototype.createNew = function (id, userLocationDTO, callback) {
         var _self = this;
 
         // Validate userLocationDTO first
@@ -103,7 +104,7 @@ var UserLocationMO = DatabaseContext.UserLocation;
         Async.waterfall([
             // Find user by their mobile
             function (innerCallback) {
-                DatabaseContext.User.findOne({ mobile: mobile }, innerCallback);
+                DatabaseContext.User.findOne({ _id: id }, innerCallback);
             },
 
             function (userMO, innerCallback) {

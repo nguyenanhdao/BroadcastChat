@@ -54,7 +54,7 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
                     longitude: 11.23,
                     latitude: 12.13,
                     createdWhen: new Date(),
-                    createdWho: _self._unitTestUser.mobile
+                    createdWho: _self._unitTestUser.id
                 });
                 PublicMessageDTC.getInstance().createNew(publicMessageDTO, innerCallback);
             },
@@ -94,7 +94,7 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
             longitude: 11.212313,
             latitude: 12.112313,
             createdWhen: new Date(),
-            createdWho: '0914090540'
+            createdWho: _self._unitTestUser.id
         });
 
         Async.waterfall([
@@ -145,7 +145,7 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
             longitude: 11.212313,
             latitude: 12.112313,
             createdWhen: new Date(),
-            createdWho: '0914090540'
+            createdWho: _self._unitTestUser.id
         });
         var publicMessageReplyId = null;
 

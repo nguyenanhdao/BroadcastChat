@@ -18,6 +18,7 @@ var Util = require('util');
         
         // Security stuff
         'accessDenied': 'Access Denined.',
+        'loginWrongMobileOrPassword': 'Wrong mobile number or password',
 
         // API Errors
         'userLoginMobileIsRequired': 'Mobile field is required.',

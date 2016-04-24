@@ -41,7 +41,8 @@ var BaseAPI = Rfr('api-v1/base-api.js');
             if (!Util.isNullOrUndefined(errorCode)) {
                 _self.sendErrorResponse(response, errorCode, data);
             } else {
-                _self.sendSimpleSuccessReponse(response);
+                data.password = '';
+                _self.sendSuccessResponse(response, 'ok', data);
             }
         });
     };

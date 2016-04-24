@@ -50,16 +50,18 @@ var SystemLog = Rfr('system-log.js');
                 UserDTC.getInstance().getByMobile(mobile, function (error, userDTO) {
                     // Handle error
                     if (!Util.isNullOrUndefined(error)) {
-                        callback('Internal server error.', null);
                         SystemLog.error('Cannot get user from mobile in UserDTC. Error message: ' + error);
+                        callback('internalError', null);
                     }
-
-                    // Compare password
-                    if (password === userDTO.password) {
-                        userDTO.password = '';
-                        return callback(null, userDTO);
+                    
+                    // Check that user existed or not
+                    if (Util.isNullOrUndefined(userDTO)) {
+                        callback('userLoginNotExistedMobileNumber');
+                    } else if (password !== userDTO.password) {
+                        callback('loginWrongMobileOrPassword');
+                    } else {
+                        callback(null, userDTO);
                     }
-                    return callback('Wrong username or password.', null);
                 });
             })
         );

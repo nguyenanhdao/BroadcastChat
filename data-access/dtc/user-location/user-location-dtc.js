@@ -109,10 +109,11 @@ var UserLocationMO = DatabaseContext.UserLocation;
 
             function (userMO, innerCallback) {
                 if (Util.isNullOrUndefined(userMO)) {
-                    return innerCallback('userLocationDTCNotExistedUser');
+                    innerCallback('userLocationDTCNotExistedUser');
+                    return;
                 }
 
-                return innerCallback(null, userMO);
+                innerCallback(null, userMO);
             },
 
             // Add new user if mobile number is not registered yet
@@ -128,7 +129,8 @@ var UserLocationMO = DatabaseContext.UserLocation;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot create user location log. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             callback(null, userLocationDTO);

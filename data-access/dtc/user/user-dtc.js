@@ -120,10 +120,11 @@ var UserMO = DatabaseContext.User;
             // Check duplicated
             function (userMO, innerCallback) {
                 if (!Util.isNullOrUndefined(userMO)) {
-                    return innerCallback('userDTCDuplicatedMobileNumber');
+                    innerCallback('userDTCDuplicatedMobileNumber');
+                    return;
                 }
                 
-                return innerCallback(null);
+                innerCallback(null);
             },
 
             // Add new user if mobile number is not registered yet
@@ -144,7 +145,8 @@ var UserMO = DatabaseContext.User;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot create new user. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             callback(null, userDTO);
@@ -181,7 +183,8 @@ var UserMO = DatabaseContext.User;
             // Handle database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot delete user. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             return callback(null);
@@ -204,10 +207,11 @@ var UserMO = DatabaseContext.User;
 
             function (userMO, innerCallback) {
                 if (!Util.isNullOrUndefined(userMO)) {
-                    return innerCallback(null, _self.mapFromMO(userMO));
+                    innerCallback(null, _self.mapFromMO(userMO));
+                    return;
                 }
 
-                return innerCallback(null, null);
+                innerCallback(null, null);
             }
         ],
 
@@ -215,10 +219,11 @@ var UserMO = DatabaseContext.User;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot find user by user\'s mobile: ' + mobile, error);
-                return callback(ResponseCode.getMessage('databaseError'), null);
+                callback(error, null);
+                return;
             }
 
-            return callback(null, result);
+             callback(null, result);
         });
     };
     
@@ -288,10 +293,11 @@ var UserMO = DatabaseContext.User;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot get all user in database. Error: ', error);
-                return callback('Cannot get all user in database.', null);
+                callback(error, null);
+                return;
             }
 
-            return callback(null, result);
+            callback(null, result);
         });
     };
 

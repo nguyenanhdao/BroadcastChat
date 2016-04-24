@@ -150,10 +150,11 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
 
             function (userMO, innerCallback) {
                 if (Util.isNullOrUndefined(userMO)) {
-                    return innerCallback('publicMessageDTCNotExistedUser');
+                    innerCallback('publicMessageDTCNotExistedUser');
+                    return;
                 }
 
-                return innerCallback(null, userMO);
+                innerCallback(null, userMO);
             },
 
             function (userMO, innerCallback) {
@@ -173,7 +174,8 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot create public message. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             callback(null, publicMessageDTO);
@@ -209,7 +211,8 @@ var PublicMessageMO = DatabaseContext.PublicMessage;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot delete public message. Error: ', ResponseCode.getMessage(error));
-                return callback(error);
+                callback(error);
+                return;
             }
 
             callback(null);

@@ -205,7 +205,8 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot reply to public message. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             callback(null, publicMessageReplyDTO);
@@ -251,7 +252,8 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
             // Log database error
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot delete public message reply. Error: ', ResponseCode.getMessage(error));
-                return callback(ResponseCode.getMessage(error), null);
+                callback(error, null);
+                return;
             }
 
             _publicMessageMO = null;

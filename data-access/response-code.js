@@ -17,6 +17,8 @@ var Util = require('util');
         'databaseError': 'Database connection error.',
 
         'userDTCDuplicatedMobileNumber': 'Duplicated mobile number.',
+        'userDTCNotExistedUser': 'User is not existed',
+        
         'userLocationDTCNotExistedUser': 'User is not existed.',
 
         'publicMessageDTCNotExistedId': 'Public message with provided id is not existed.',

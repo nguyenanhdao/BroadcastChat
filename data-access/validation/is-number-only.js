@@ -23,16 +23,6 @@ var _ = require('lodash');
     };
     
     /**
-     * Validate field and return error message
-    **/
-    function IsNumberOnly(fieldName, fieldValue) {
-        if (!IsNumberOnly.VALIDATOR(fieldValue)) {
-            return _.replace(IsNumberOnly.ERROR_MESSAGE, '{0}', fieldName);
-        }
-        return null;
-    };
-    
-    /**
      * Validate field and add error into errors array
     **/
     function IsNumberOnly(fieldName, fieldValue, errors) {

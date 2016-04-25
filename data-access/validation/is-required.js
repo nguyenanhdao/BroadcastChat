@@ -19,16 +19,6 @@ var _ = require('lodash');
     };
 
     /**
-     * Validate field and return error message
-    **/
-    function IsRequired(fieldName, fieldValue) {
-        if (!IsRequired.VALIDATOR(fieldValue)) {
-            return _.replace(IsRequired.ERROR_MESSAGE, '{0}', fieldName);
-        }
-        return null;
-    };
-    
-    /**
      * Validate field and add error into errors array
     **/
     function IsRequired(fieldName, fieldValue, errors) {

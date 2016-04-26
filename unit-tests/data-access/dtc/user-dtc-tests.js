@@ -148,16 +148,24 @@ var UserStatus = Rfr('data-access/dtc/user/user-status.js');
         });
         var validationErrors = UserDTC.getInstance().validate(newUser);
         Assert.notEqual(_.indexOf(validationErrors, 'Mobile is required.'), -1);
+        Assert.notEqual(_.indexOf(validationErrors, 'Mobile must has at least 8 characters.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Password is required.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Full Name is required.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Created When is required.'), -1);
         Assert.notEqual(_.indexOf(validationErrors, 'Status is required.'), -1);
-
+        
         // Validate custom validation
         newUser = new UserDTO({
             mobile: 'abcd'
         });
+        validationErrors = UserDTC.getInstance().validate(newUser);
         Assert.notEqual(_.indexOf(validationErrors, 'Mobile must contains only numbers.'), -1);
+        
+        newUser = new UserDTO({
+            mobile: '0123456789123456'
+        });
+        validationErrors = UserDTC.getInstance().validate(newUser);
+        Assert.notEqual(_.indexOf(validationErrors, 'Mobile must has maximum 15 characters.'), -1);
 
         SystemLog.info(_self._name + ' - test case - validate passed the test.');
         callback(null);

@@ -4,6 +4,7 @@
 var IsRequired = require('./is-required.js');
 var IsNumberOnly = require('./is-number-only.js');
 var MinLength = require('./min-length.js');
+var MaxLength = require('./max-length.js');
 
 (function (Validation) {
     
@@ -17,6 +18,10 @@ var MinLength = require('./min-length.js');
     
     Validation.minLength = function (fieldName, fieldValue, minLength, errors) {
         return MinLength(fieldName, fieldValue, minLength, errors);
+    };
+    
+    Validation.maxLength = function (fieldName, fieldValue, maxLength, errors) {
+        return MaxLength(fieldName, fieldValue, maxLength, errors);
     };
 
 })(module.exports);

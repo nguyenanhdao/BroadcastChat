@@ -51,6 +51,8 @@ var UserMO = DatabaseContext.User;
 
         Validation.isRequired('Mobile', userDTO.mobile, errors);
         Validation.isNumberOnly('Mobile', userDTO.mobile, errors);
+        Validation.minLength('Mobile', userDTO.mobile, 8, errors);
+        Validation.maxLength('Mobile', userDTO.mobile, 15, errors);
 
         Validation.isRequired('Password', userDTO.password, errors);
         Validation.isRequired('Full Name', userDTO.fullName, errors);

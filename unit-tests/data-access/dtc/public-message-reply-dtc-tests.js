@@ -204,12 +204,10 @@ var PublicMessageReplyMO = DatabaseContext.PublicMessageReply;
      * Override doTest function of base-test to run test case
     **/
     PublicMessageReplyDTCTests.prototype.doTest = function (callback) {
-        var _self = this;
-
         Async.waterfall([
-            _self.validate.bind(_self),
-            _self.createNew.bind(_self),
-            _self.delete.bind(_self)
+            this.validate.bind(this),
+            this.createNew.bind(this),
+            this.delete.bind(this)
         ],
 
         function (error) {

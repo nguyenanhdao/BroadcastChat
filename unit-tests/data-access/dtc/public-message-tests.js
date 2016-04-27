@@ -138,11 +138,9 @@ var UserMO = DatabaseContext.User;
      * Override doTest function of base-test to run test case
     **/
     PublicMessageDTCTests.prototype.doTest = function (callback) {
-        var _self = this;
-
         Async.waterfall([
-            _self.createNew.bind(_self),
-            _self.validate.bind(_self)
+            this.createNew.bind(this),
+            this.validate.bind(this)
         ],
 
         function (error) {

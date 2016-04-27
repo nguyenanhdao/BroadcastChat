@@ -175,12 +175,10 @@ var UserStatus = Rfr('data-access/dtc/user/user-status.js');
      * Override doTest function of base-test to run test case
     **/
     UserDTCTests.prototype.doTest = function (callback) {
-        var _self = this;
-
         Async.waterfall([
-            _self.validate.bind(_self),
-            _self.getByMobile.bind(_self),
-            _self.createNew.bind(_self)
+            this.validate.bind(this),
+            this.getByMobile.bind(this),
+            this.createNew.bind(this)
         ],
 
         function (error) {

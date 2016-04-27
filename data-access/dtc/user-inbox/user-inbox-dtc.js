@@ -48,7 +48,7 @@ var UserInboxMO = DatabaseContext.UserInbox;
     UserInboxDTC.prototype.validate = function (userInboxDTO) {
         var errors = [];
 
-        Validation.isRequired('userId', userInboxDTO.userId, errors);
+        Validation.isRequired('UserId', userInboxDTO.userId, errors);
 
         return errors;
     };
@@ -176,6 +176,116 @@ var UserInboxMO = DatabaseContext.UserInbox;
             }
 
             userInboxDTO = newDTO;
+            callback(null, userInboxDTO);
+        });
+    };
+    
+    /**
+     * Delete userInboxDTO
+     * @param userInboxDTO - user inbox dto
+     * @param callback - function(error, results) return error when cannot find this element
+     */
+    UserInboxDTC.prototype.delete = function (userInboxDTO, callback) {
+        Async.waterfall([
+            // Find UserInboxMO by their userId
+            function (innerCallback) {
+                DatabaseContext.UserInbox.findOne({ _id: userInboxDTO.id }, innerCallback);
+            },
+            function (userInboxMO, innerCallback) {
+                if (Util.isNullOrUndefined(userInboxMO)) {
+                    innerCallback('userInboxDTCNotExistedInboxId');
+                    return;
+                }
+                
+                userInboxMO.remove(function (error) {
+                    innerCallback(error);
+                });
+            }
+        ],
+
+        // Final callback
+        function (error) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot delete user inbox: ', ResponseCode.getMessage(error));
+                callback(error, null);
+                return;
+            }
+            
+            callback(null);
+        });
+    };
+    
+    /**
+     * Get user inbox by id
+     * @param id - user inbox id
+     * @callback - function (error, userInboxDTO)
+     */
+    UserInboxDTC.prototype.getById = function (id, callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            // Find UserInboxMO by their userId
+            function (innerCallback) {
+                DatabaseContext.UserInbox.findOne({ _id: id }, innerCallback);
+            },
+            function (userInboxMO, innerCallback) {
+                if (Util.isNullOrUndefined(userInboxMO)) {
+                    innerCallback('userInboxDTCNotExistedInboxId');
+                    return;
+                }
+                
+                var userInboxDTO = _self.mapFromMO(userInboxMO);
+                innerCallback(null, userInboxDTO);
+            }
+        ],
+
+        // Final callback
+        function (error, userInboxDTO) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot get user inbox: ', ResponseCode.getMessage(error));
+                callback(error, null);
+                return;
+            }
+            
+            callback(null, userInboxDTO);
+        });
+    };
+    
+    /**
+     * Get user inbox by id
+     * @param id - user inbox id
+     * @callback - function (error, userInboxDTO)
+     */
+    UserInboxDTC.prototype.getByUserId = function (userId, callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            // Find UserInboxMO by their userId
+            function (innerCallback) {
+                DatabaseContext.UserInbox.findOne({ userId: userId }, innerCallback);
+            },
+            function (userInboxMO, innerCallback) {
+                if (Util.isNullOrUndefined(userInboxMO)) {
+                    innerCallback('userInboxDTCNotExistedInboxId');
+                    return;
+                }
+                
+                var userInboxDTO = _self.mapFromMO(userInboxMO);
+                innerCallback(null, userInboxDTO);
+            }
+        ],
+
+        // Final callback
+        function (error, userInboxDTO) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot get user inbox: ', ResponseCode.getMessage(error));
+                callback(error, null);
+                return;
+            }
+            
             callback(null, userInboxDTO);
         });
     };

@@ -20,6 +20,11 @@ var Schema = Mongoose.Schema;
         hasSeen: {
             type: Boolean,
             default: false
+        },
+        
+        createdWhen: {
+            type: Date,
+            default: Date.now
         }
     });
 

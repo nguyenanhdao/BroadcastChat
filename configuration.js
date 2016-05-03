@@ -8,4 +8,7 @@ var Path = require('path');
     configuration.APP_ROOT_DIRECTORY = Path.resolve(__dirname);
     configuration.SESSION_SECRET_KEY = 'bobo#$1892@VLSI';
     configuration.MONGODB_URL = 'mongodb://localhost:27017/AbuChatDatabase';
+    
+    // TO-DO Move this to SystemConfigurationOptions table
+    configuration.MAX_DISTANCE = 0.5; 
 })(module.exports);

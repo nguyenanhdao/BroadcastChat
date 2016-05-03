@@ -20,6 +20,13 @@ var Util = require('util');
         'userDTCNotExistedUser': 'User is not existed',
         
         'userLocationDTCNotExistedUser': 'User is not existed.',
+        
+        'userInboxDTCNotExistedUser': 'User is not existed.',
+        'userInboxDTCNotExistedInboxId': 'Inbox for user is not existed.',
+        'userInboxDTCNotExistedUserId': 'Inbox for user id is not existed.',
+        
+        'userInboxMessageDTCNotExistedUserInboxId': 'User Inbox for id is not existed.',
+        'userInboxMessageDTCNotExistedUserInboxMessageId': 'User Inbox Message for id is not existed',
 
         'publicMessageDTCNotExistedId': 'Public message with provided id is not existed.',
         'publicMessageDTCNotExistedUser': 'User is not existed.',

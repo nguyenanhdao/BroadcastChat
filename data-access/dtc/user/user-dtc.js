@@ -13,8 +13,9 @@ var SystemLog = Rfr('system-log.js').getInstance();
 var BaseDTC = Rfr('data-access/dtc/base-dtc.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
 var Validation = Rfr('data-access/validation');
-var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var ResponseCode = Rfr('data-access/response-code.js');
+var LocationHelper = Rfr('data-access/utils/location-helper.js');
+var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var UserMO = DatabaseContext.User;
 
 
@@ -305,6 +306,54 @@ var UserMO = DatabaseContext.User;
             callback(null, result);
         });
     };
+
+    /**
+     * Get all user nearby centerLocation
+     * @param centerLocation - center location to get user nearby
+     * @param maxDistance - max distance from center location
+     * @param callback - function (error, listUserNearby)
+     */
+    UserDTC.prototype.getUserNearby = function (centerLocation, maxDistance, callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            // Get all user and sort userLocation by created date
+            function (innerCallback) {
+                DatabaseContext.User.find({}, function (error, listAllUsers) {
+                    innerCallback(error, listAllUsers);
+                });
+            },
+            function (listAllUsers, innerCallback) {
+                listAllUsers.forEach(function (user) {
+                    user.userLocation.sort(function (firstLocation, secondLocation) {
+                        return secondLocation.createdWhen - firstLocation.createdWhen;
+                    });
+                });
+                innerCallback(null, listAllUsers);
+            },
+            function (listAllUsers, innerCallback) {
+                var listUserNearby = [];
+                listAllUsers.forEach(function (user) {
+                    if (!_.isEmpty(user.userLocation) &&
+                        LocationHelper.getDistance(centerLocation, user.userLocation[0]) < maxDistance) {
+                        listUserNearby.push(_self.mapFromMO(user));
+                    }
+                });
+                innerCallback(null, listUserNearby);
+            }
+        ],
+        
+        function (error, listUserNearby) {
+            // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot find user nearby: ', error);
+                callback(error);
+                return;
+            }
+
+            callback(null, listUserNearby);
+        });
+    }
 
     module.exports = UserDTC;
 })(module);

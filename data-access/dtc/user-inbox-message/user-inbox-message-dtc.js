@@ -13,6 +13,8 @@ var ResponseCode = Rfr('data-access/response-code.js');
 var BaseDTC = Rfr('data-access/dtc/base-dtc.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
 var Validation = Rfr('data-access/validation');
+var UserInboxDTO = Rfr('data-access/dtc/user-inbox/user-inbox-dto.js');
+var UserInboxDTC = Rfr('data-access/dtc/user-inbox/user-inbox-dtc.js');
 var UserInboxMessageDTO = Rfr('data-access/dtc/user-inbox-message/user-inbox-message-dto.js');
 var UserInboxMessageMO = DatabaseContext.UserInboxMessage;
 
@@ -129,6 +131,63 @@ var UserInboxMessageMO = DatabaseContext.UserInboxMessage;
         // Final callback
         function (error) {
             // Log database error
+            if (!Util.isNullOrUndefined(error)) {
+                SystemLog.error('Cannot create new user inbox message: ', ResponseCode.getMessage(error));
+                callback(error, null);
+                return;
+            }
+
+            callback(null, userInboxMessageDTO);
+        });
+    };
+    
+    /**
+     * Create new user inbox message by userID
+     * It will create user inbox if not existed
+     * @param userId - user Id
+     * @param userInboxMessageDTO - user inbox message dto
+     * @param callback - function (error, newDTO)
+     */
+    UserInboxMessageDTC.prototype.createNewByUserId = function (userId, userInboxMessageDTO, callback) {
+        var _self = this;
+
+        // Validate userInboxMessageDTO first
+        var errors = _self.validate(userInboxMessageDTO);
+        if (!_.isEmpty(errors)) {
+            return callback(errors);
+        }
+
+        Async.waterfall([
+            function (innerCallback) {
+                var userInboxDTO = new UserInboxDTO({
+                    userId: userId
+                });
+                UserInboxDTC.getInstance().createIfNotExisted(userInboxDTO, function (error, newUserInboxDTO) {
+                    innerCallback(error, newUserInboxDTO);
+                });
+            },
+            function (userInboxDTO, innerCallback) {
+                DatabaseContext.UserInbox.findOne({ _id: userInboxDTO.id }, function (error, userInboxMO) {
+                    innerCallback(error, userInboxMO);
+                });
+            },
+            function (userInboxMO, innerCallback) {
+                var userInboxMessageMO = _self.mapFromDTO(userInboxMessageDTO);
+                userInboxMO.userInboxMessage.push(userInboxMessageMO);
+                userInboxMO.save(function (error) {
+                    if (!Util.isNullOrUndefined(error)) {
+                        innerCallback(error);
+                        return;
+                    }
+                    
+                    userInboxMessageDTO = _self.mapFromMO(userInboxMessageMO);
+                    innerCallback(null, userInboxMessageDTO);
+                });
+            }
+        ],
+
+        // Final callback
+        function (error, userInboxMessageDTO) {
             if (!Util.isNullOrUndefined(error)) {
                 SystemLog.error('Cannot create new user inbox message: ', ResponseCode.getMessage(error));
                 callback(error, null);

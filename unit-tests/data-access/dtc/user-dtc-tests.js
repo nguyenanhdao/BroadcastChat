@@ -14,6 +14,8 @@ var UserDTC = Rfr('data-access/dtc/user/user-dtc.js');
 var BaseTest = Rfr('unit-tests/base-test.js');
 var UnitTestUtils = Rfr('unit-tests/unit-test-utils.js');
 var DatabaseContext = Rfr('data-access/database-context.js');
+var UserLocationDTO = Rfr('data-access/dtc/user-location/user-location-dto.js');
+var UserLocationDTC = Rfr('data-access/dtc/user-location/user-location-dtc.js');
 var UserDTO = Rfr('data-access/dtc/user/user-dto.js');
 var UserMO = DatabaseContext.User;
 var AuthorizationType = Rfr('api-v1/user-authorization-type.js');
@@ -132,6 +134,62 @@ var UserStatus = Rfr('data-access/dtc/user/user-status.js');
             callback(null);
         });
     };
+    
+    /**
+     * Test for get list user nearby
+    **/
+    UserDTCTests.prototype.getUserNearby = function (callback) {
+        var _self = this;
+        
+        Async.waterfall([
+            function (innerCallback) {
+                var newUserLocation = new UserLocationDTO({
+                    longitude: 11.23,
+                    latitude: 12.13,
+                    createdWhen: new Date()
+                });
+                UserLocationDTC.getInstance().createNew(_self._unitTestUser.id, newUserLocation, function (error) {
+                    innerCallback(error);
+                });
+            },
+            function (innerCallback) {
+                var newUserLocation = new UserLocationDTO({
+                    longitude: 106.636383,
+                    latitude: 10.784734,
+                    createdWhen: new Date()
+                });
+                UserLocationDTC.getInstance().createNew(_self._unitTestUser.id, newUserLocation, function (error) {
+                    innerCallback(error);
+                });
+            },
+            function (innerCallback) {
+                var maxDistance = 0.5;
+                var centerLocation = {
+                    longitude: 106.636522,
+                    latitude: 10.785751
+                };
+
+                UserDTC.getInstance().getUserNearby(centerLocation, maxDistance, function (error, listUser) {
+                    innerCallback(error, listUser);
+                });
+            },
+            function (listUser, innerCallback) {
+                if (Util.isNullOrUndefined(listUser)) {
+                    Assert.fail();
+                }
+                
+                Assert.equal(listUser[0].id.toString(), _self._unitTestUser.id);
+                innerCallback(null);
+            }
+        ],
+        
+        function (error) {
+            Assert.ifError(error);
+
+            SystemLog.info(_self._name + ' - test case - getUserNearby passed the test.');
+            callback(null);
+        });
+    };
 
     /**
      * Test for validation function of UserDTC
@@ -178,7 +236,8 @@ var UserStatus = Rfr('data-access/dtc/user/user-status.js');
         Async.waterfall([
             this.validate.bind(this),
             this.getByMobile.bind(this),
-            this.createNew.bind(this)
+            this.createNew.bind(this),
+            this.getUserNearby.bind(this)
         ],
 
         function (error) {

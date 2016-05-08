@@ -8,6 +8,7 @@ var Controllers = require('./controllers');
 var Path = require('path');
 var APIRouter = require('./api-v1/main-router.js');
 var UnitTestManager = require('./unit-tests/test-manager.js');
+var Cors = require('cors');
 
 (function () {
     // Create and setup for express application

@@ -24,7 +24,8 @@ var BaseRouter = Rfr('api-v1/base-router.js');
         // USER API
         this.registerAPI(require('./register-api.js'));     // user/register
         this.registerAPI(require('./login-api.js'));        // user/login
-        this.registerAPI(require('./logout-api.js'));     // user/logout
+        this.registerAPI(require('./test-login-api.js'));   // user/test-login
+        this.registerAPI(require('./logout-api.js'));       // user/logout
     };
     
     module.exports = Router;

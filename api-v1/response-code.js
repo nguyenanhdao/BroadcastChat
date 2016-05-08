@@ -26,6 +26,7 @@ var Util = require('util');
         'userLoginMobileIsRequired': 'Mobile field is required.',
         'userLoginNotExistedMobileNumber': 'Mobile number is not existed.',
         'userLoginWrongPassword': 'Wrong password.',
+        'userLoginTestLoginNotLogin': 'User is not loged in.',
         'userRegisterValidationFailed': 'Validation failed.',
         
         'publicMessageDeletePublicMessageIdIsRequired': 'Public Message Id is required.',

@@ -13,6 +13,8 @@ var Cors = require('cors');
 (function () {
     // Create and setup for express application
     var app = Express();
+    app.use(Cors());
+    
     var server = Http.Server(app);
     var apiRouter = null;
 
